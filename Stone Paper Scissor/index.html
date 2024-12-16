@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissor Game</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+
+<body>
+    <h1>Rock Paper Scissor</h1>
+    
+    <!-- Dark Mode Switch and Share Button -->
+    <div class="header-controls">
+        <label class="toggle-switch" id="dark">
+            <span class="mode-label">Dark Mode:</span>
+            <input type="checkbox" />
+            <span class="slider"></span>
+        </label>
+        <button id="share-btn">Share 🔗</button>
+    </div>
+
+    <!-- Choices Section -->
+    <div class="choices">
+        <div class="choice" id="rock">
+            <img src="public/assets/rock.png" alt="Rock">
+        </div>
+        <div class="choice" id="paper">
+            <img src="public/assets/paper.png" alt="Paper">
+        </div>
+        <div class="choice" id="scissors">
+            <img src="public/assets/scissors.png" alt="Scissors">
+        </div>
+    </div>
+   
+   <!-- Avatar and Scoreboard Section -->
+<div class="score-board">
+    <div class="avatar left-div">
+        <img src="public/assets/female-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.webp" alt="User Avatar">
+        <p>Khushi</p>
+        <p class="final" id="userChoice">Your choice</p>
+    </div>
+    <div class="score">
+        Score:
+        <p id="user-score"> 0</p>
+        
+    </div>
+    
+    
+    
+    <div class="score">
+        Score:
+        <p id="comp-score">0</p><br>
+        
+
+        
+    </div>
+    <div class="avatar right-div">
+        <img src="public/assets/png-clipart-computer-icons-avatar-user-laptop-avatar-blue-heroes.png" alt="Computer Avatar">
+        <p>Computer</p>
+        <p class="final" id="compChoice">Comp Choice</p>
+    </div>
+</div>
+
+    <!-- Message Section -->
+    <div class="msg-container">
+        <p id="msg">Play your move</p>
+    </div>
+
+    <!-- Reset Button -->
+    <div class="reset-button">
+        <button id="reset-btn">Reset Game</button>
+    </div>
+
+    <script src="src/script.js"></script>
+</body>
+
+</html>

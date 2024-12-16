@@ -1,0 +1,288 @@
+/* General Reset and Box Sizing */
+* {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* Main Heading */
+h1 {
+    background-color: #081b31;
+    color: #fff;
+    height: 4rem;
+    line-height: 4rem;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Header Controls (Dark Mode and Share Button) */
+.header-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem 2rem;
+}
+
+.toggle-switch {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+}
+
+.toggle-switch .mode-label {
+    font-size: 1.2rem;
+    color: #333;
+    font-weight: 500;
+}
+
+#share-btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 1.2rem;
+    background-color: #081b31;
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-left: 1rem;
+}
+
+#share-btn:hover {
+    background-color: #0a263e;
+}
+
+/* Choices Section */
+.choices {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.choice {
+    height: 120px;
+    width: 120px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+.choice:hover {
+    cursor: pointer;
+    background-color: #4d6b8e;
+}
+
+img {
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Message Section */
+.msg-container {
+    margin-top: 1.5rem;
+}
+
+#msg {
+    background-color: #081b31;
+    color: #fff;
+    font-size: 1.5rem;
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    border-radius: 0.7rem;
+}
+
+/* Reset Button */
+#reset-btn {
+    margin-top: 1.5rem;
+    padding: 0.6rem 1.5rem;
+    font-size: 1.4rem;
+    background-color: #05101e;
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#reset-btn:hover {
+    background-color: #0a263e;
+}
+
+/* Dark Mode */
+body.dark-mode {
+    background-color: #1e1e1e;
+    color: #e4e4e4;
+}
+
+body.dark-mode .mode-label {
+    color: #fff;
+}
+
+body.dark-mode h1,
+body.dark-mode #msg,
+body.dark-mode #reset-btn,
+body.dark-mode #share-btn {
+    background-color: #333;
+    color: #fff;
+}
+
+body.dark-mode .choice:hover {
+    background-color: #444;
+}
+
+/* Avatar and Scoreboard Container */
+.avatar-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    margin: 2rem auto;
+    width: 80%;
+}
+
+/* Scoreboard Styling for User and Computer */
+.score-board {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.5rem;
+    width: 80%;
+    margin: 1rem auto;
+}
+
+.score {
+    display: flex;
+    align-items: center;
+    font-size: 2rem;
+    gap: 1.5rem;
+    position: relative;
+}
+
+/* Ensure that final choices have enough space and don't cause layout shifts */
+.final {
+    font-size: 1.2rem;
+    font-weight: bold;
+    min-width: 100px; /* Ensure consistent width for choice text */
+    text-align: center;
+}
+
+/* Avatar Section */
+.avatar {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.2rem;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Avatar Image Styling */
+.avatar img {
+    height: 80px;
+    width: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 0.5rem;
+}
+
+/* Left and Right Avatars */
+.left-div, .right-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Fix for the flexbox layout */
+.score-board {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.score-board .avatar,
+.score-board .score {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* Adjustments for .final elements in score */
+.score .final {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+}
+
+
+#share-btn:hover {
+    background-color: #0a263e;
+}
+
+/* Dark Mode Slider Styling */
+body.dark-mode .toggle-switch .slider {
+    background-color: #4CAF50;
+}
+
+body.dark-mode input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Container for the toggle switch and text */
+.toggle-switch {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    margin-right: 2rem;
+    margin-left: 1rem;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-switch .slider {
+    position: relative;
+    cursor: pointer;
+    width: 60px;
+    height: 34px;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 50px;
+}
+
+.toggle-switch .slider:before {
+    content: "";
+    position: absolute;
+    height: 26px;
+    width: 26px;
+    border-radius: 50%;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+}
+
+input:checked + .slider {
+    background-color: #4CAF50;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.mode-label {
+    font-size: 1.2rem;
+    color: #333;
+    font-weight: 500;
+}
