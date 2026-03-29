@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MS Abroad Roadmap — CSC → Europe Fall 2027</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07090f;
+  --surface: #0e1320;
+  --surface2: #141c2e;
+  --border: rgba(255,255,255,0.07);
+  --text: #e4e8f0;
+  --muted: #7a869a;
+  --amber: #f5a623;
+  --amber-dim: rgba(245,166,35,0.1);
+  --dream: #b48ef8;
+  --dream-dim: rgba(180,142,248,0.1);
+  --target: #4dc9f5;
+  --target-dim: rgba(77,201,245,0.1);
+  --safety: #3edfa8;
+  --safety-dim: rgba(62,223,168,0.1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;line-height:1.6;font-size:15px}
+
+/* NAV */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(7,9,15,0.96);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  padding:0 32px;
+  display:flex;align-items:center;gap:28px;height:50px;
+}
+.nav-logo{
+  font-family:'Fraunces',serif;
+  font-size:17px;color:var(--amber);font-weight:900;
+  letter-spacing:-0.5px;white-space:nowrap;margin-right:8px;
+}
+nav a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:500;letter-spacing:0.2px;transition:color 0.2s;white-space:nowrap}
+nav a:hover{color:var(--text)}
+
+/* HERO */
+.hero{padding:64px 48px 52px;max-width:1120px;margin:0 auto}
+.hero-eyebrow{font-family:'DM Mono',monospace;font-size:11px;color:var(--amber);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.hero-eyebrow::before{content:'';display:inline-block;width:24px;height:1px;background:var(--amber)}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(38px,5.5vw,70px);font-weight:900;line-height:1.02;letter-spacing:-2.5px;margin-bottom:18px}
+.hero h1 em{font-style:italic;color:var(--amber)}
+.hero-sub{color:var(--muted);font-size:16px;max-width:620px;margin-bottom:40px;line-height:1.7}
+.hero-stats{display:flex;gap:48px;flex-wrap:wrap}
+.stat{display:flex;flex-direction:column;gap:4px}
+.stat-val{font-family:'Fraunces',serif;font-size:34px;font-weight:900;color:var(--amber);line-height:1}
+.stat-label{font-size:11px;color:var(--muted);font-weight:500;letter-spacing:0.8px;text-transform:uppercase}
+
+/* LAYOUT */
+section{max-width:1120px;margin:0 auto;padding:52px 48px}
+.section-eyebrow{font-family:'DM Mono',monospace;font-size:11px;color:var(--amber);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+.section-title{font-family:'Fraunces',serif;font-size:30px;font-weight:700;letter-spacing:-1px;margin-bottom:36px}
+.divider{border:none;border-top:1px solid var(--border)}
+
+/* TIMELINE */
+.timeline{padding-left:28px;position:relative}
+.timeline::before{content:'';position:absolute;left:0;top:16px;bottom:16px;width:2px;background:linear-gradient(to bottom,var(--amber) 0%,rgba(245,166,35,0.3) 60%,transparent 100%)}
+.phase{position:relative;margin-bottom:0}
+.phase-dot{position:absolute;left:-34px;top:30px;width:12px;height:12px;border-radius:50%;background:var(--amber);border:2px solid var(--bg);box-shadow:0 0 0 3px rgba(245,166,35,0.2)}
+.phase-dot.now{background:#fff;animation:pulse 2.2s infinite;box-shadow:0 0 0 4px rgba(255,255,255,0.15)}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 4px rgba(255,255,255,0.15)}50%{box-shadow:0 0 0 9px rgba(255,255,255,0.04)}}
+.phase-inner{padding:20px 0 6px;display:flex;gap:20px;align-items:flex-start}
+.phase-time{font-family:'DM Mono',monospace;font-size:11.5px;color:var(--amber);min-width:148px;padding-top:2px;letter-spacing:0.3px}
+.phase-body{flex:1}
+.phase-name{font-size:15.5px;font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.badge{display:inline-block;font-size:9.5px;font-family:'DM Mono',monospace;padding:2px 8px;border-radius:20px;letter-spacing:0.5px;font-weight:500}
+.badge.now{background:rgba(255,255,255,0.12);color:#fff}
+.badge.key{background:rgba(245,166,35,0.15);color:var(--amber)}
+.badge.app{background:rgba(62,223,168,0.12);color:var(--safety)}
+.phase-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.chip{font-size:12px;padding:4px 11px;border-radius:6px;border:1px solid var(--border);color:var(--muted);background:var(--surface)}
+.chip.exam{border-color:rgba(245,166,35,0.3);color:var(--amber);background:var(--amber-dim)}
+.chip.doc{border-color:rgba(77,201,245,0.25);color:var(--target);background:var(--target-dim)}
+.chip.apply{border-color:rgba(62,223,168,0.25);color:var(--safety);background:var(--safety-dim)}
+.chip.milestone{border-color:rgba(180,142,248,0.3);color:var(--dream);background:var(--dream-dim)}
+.phase-sep{border:none;border-top:1px solid var(--border);margin:0}
+
+/* TABS */
+.cat-tabs{display:flex;gap:8px;margin-bottom:28px;flex-wrap:wrap}
+.cat-tab{padding:9px 22px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;letter-spacing:0.3px}
+.cat-tab.active-dream{border-color:var(--dream);color:var(--dream);background:var(--dream-dim)}
+.cat-tab.active-target{border-color:var(--target);color:var(--target);background:var(--target-dim)}
+.cat-tab.active-safety{border-color:var(--safety);color:var(--safety);background:var(--safety-dim)}
+.cat-panel{display:none}
+.cat-panel.active{display:block}
+
+/* UNI CARDS */
+.uni-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.uni-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px;position:relative;transition:transform 0.18s,border-color 0.18s;overflow:hidden}
+.uni-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity 0.3s;pointer-events:none}
+.uni-card:hover{transform:translateY(-2px)}
+.uni-card.dream{border-color:rgba(180,142,248,0.2)}.uni-card.dream:hover{border-color:var(--dream)}
+.uni-card.target{border-color:rgba(77,201,245,0.18)}.uni-card.target:hover{border-color:var(--target)}
+.uni-card.safety{border-color:rgba(62,223,168,0.18)}.uni-card.safety:hover{border-color:var(--safety)}
+.uni-country-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.uni-name{font-size:17px;font-weight:700;margin-bottom:4px;line-height:1.2}
+.uni-program{font-size:12.5px;color:var(--muted);margin-bottom:14px}
+.uni-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
+.uni-tag{font-size:11px;padding:2px 8px;border-radius:4px;background:var(--surface2);color:var(--muted)}
+.uni-tag.free{background:rgba(62,223,168,0.1);color:var(--safety)}
+.uni-tag.scholar{background:rgba(245,166,35,0.1);color:var(--amber)}
+.uni-tag.qs{background:rgba(180,142,248,0.1);color:var(--dream)}
+.uni-meta{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);padding-top:12px;border-top:1px solid var(--border)}
+.uni-deadline{font-family:'DM Mono',monospace;font-size:10.5px}
+.uni-fee{font-weight:600}
+.uni-fee.free-text{color:var(--safety)}
+
+/* COUNTRY ACCORDION */
+.country-grid{display:grid;gap:12px}
+.country-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.country-header{padding:20px 24px;display:flex;align-items:center;gap:14px;cursor:pointer;user-select:none;transition:background 0.2s}
+.country-header:hover{background:var(--surface2)}
+.flag{font-size:26px;flex-shrink:0}
+.country-info{flex:1}
+.country-name{font-size:17px;font-weight:700}
+.country-tagline{font-size:12.5px;color:var(--muted);margin-top:2px}
+.country-pills{display:flex;gap:6px;flex-wrap:wrap}
+.pill{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:500}
+.pill.green{background:rgba(62,223,168,0.1);color:var(--safety);border:1px solid rgba(62,223,168,0.2)}
+.pill.amber{background:rgba(245,166,35,0.1);color:var(--amber);border:1px solid rgba(245,166,35,0.2)}
+.pill.blue{background:rgba(77,201,245,0.1);color:var(--target);border:1px solid rgba(77,201,245,0.2)}
+.pill.purple{background:rgba(180,142,248,0.1);color:var(--dream);border:1px solid rgba(180,142,248,0.2)}
+.chevron{color:var(--muted);font-size:16px;transition:transform 0.25s;flex-shrink:0}
+.chevron.open{transform:rotate(180deg)}
+.country-body{padding:0 24px;max-height:0;overflow:hidden;transition:max-height 0.4s ease,padding 0.3s}
+.country-body.open{max-height:800px;padding:20px 24px 24px}
+.country-body>p{color:var(--muted);font-size:13.5px;margin-bottom:16px;line-height:1.7}
+.req-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.req-item{display:flex;align-items:flex-start;gap:8px;font-size:13px}
+.req-item span:first-child{color:var(--amber);font-size:11px;margin-top:3px;flex-shrink:0}
+.info-box{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px 16px;font-size:13px;margin-top:10px}
+.info-box strong{display:block;font-size:10.5px;font-family:'DM Mono',monospace;color:var(--amber);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+.info-box p{color:var(--muted);line-height:1.65}
+.info-boxes{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* EXAM GRID */
+.exam-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.exam-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px}
+.exam-icon{font-size:30px;margin-bottom:12px}
+.exam-title{font-size:20px;font-weight:700;margin-bottom:2px}
+.exam-sub{font-size:12px;color:var(--amber);font-family:'DM Mono',monospace;margin-bottom:16px}
+.exam-rows{display:flex;flex-direction:column;gap:9px}
+.exam-row{display:flex;justify-content:space-between;font-size:13px;padding-bottom:9px;border-bottom:1px solid var(--border)}
+.exam-row:last-child{border-bottom:none;padding-bottom:0}
+.exam-row .label{color:var(--muted)}
+.exam-row .value{font-weight:600;text-align:right}
+
+/* SCHOLARSHIP */
+.scholar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.scholar-card{background:var(--surface);border:1px solid rgba(245,166,35,0.18);border-radius:12px;padding:22px;position:relative}
+.scholar-card::after{content:'';position:absolute;top:0;right:0;width:60px;height:60px;background:radial-gradient(circle at top right,rgba(245,166,35,0.08),transparent 70%);border-radius:0 12px 0 0;pointer-events:none}
+.scholar-title{font-size:16px;font-weight:700;margin-bottom:4px}
+.scholar-country{font-size:10.5px;font-family:'DM Mono',monospace;color:var(--amber);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.scholar-desc{font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.65}
+.scholar-amount{font-family:'Fraunces',serif;font-size:24px;font-weight:900;color:var(--amber)}
+.scholar-amount-label{font-size:11px;color:var(--muted);font-family:'DM Sans',sans-serif;font-weight:400}
+.nepal-badge{display:inline-block;background:rgba(62,223,168,0.1);color:var(--safety);border:1px solid rgba(62,223,168,0.2);font-size:10px;font-family:'DM Mono',monospace;padding:2px 8px;border-radius:4px;margin-bottom:10px;letter-spacing:0.5px}
+
+/* CHECKLIST */
+.checklist{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.check-item{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-size:13.5px;cursor:pointer;transition:all 0.2s;user-select:none}
+.check-item:hover{border-color:rgba(245,166,35,0.3)}
+.check-box{width:18px;height:18px;border:2px solid var(--muted);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s;font-size:11px;color:#000;font-weight:700}
+.check-item.done{opacity:0.5}
+.check-item.done .check-box{background:var(--safety);border-color:var(--safety)}
+.check-item.done .check-box::after{content:'✓'}
+
+/* ALERT BOX */
+.alert{background:rgba(245,166,35,0.07);border:1px solid rgba(245,166,35,0.25);border-radius:10px;padding:16px 20px;font-size:13.5px;color:var(--text);margin-bottom:32px;line-height:1.65}
+.alert strong{color:var(--amber)}
+
+/* FOOTER */
+.footer{max-width:1120px;margin:0 auto;padding:28px 48px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-brand{font-family:'DM Mono',monospace}
+
+/* RESPONSIVE */
+@media(max-width:680px){
+  .hero,section{padding:32px 20px}
+  nav{padding:0 16px;gap:16px}
+  nav a:not(:first-of-type){display:none}
+  .req-grid{grid-template-columns:1fr}
+  .info-boxes{grid-template-columns:1fr}
+  .hero-stats{gap:28px}
+  .country-pills{display:none}
+  .phase-inner{flex-direction:column;gap:4px}
+  .phase-time{min-width:unset}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">MS Abroad '27</div>
+  <a href="#timeline">Timeline</a>
+  <a href="#universities">Universities</a>
+  <a href="#countries">Countries</a>
+  <a href="#exams">Exams</a>
+  <a href="#scholarships">Scholarships</a>
+  <a href="#docs">Docs</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Masters in CS &nbsp;·&nbsp; Europe &nbsp;·&nbsp; Fall 2027</div>
+  <h1>Your Roadmap to<br><em>Masters Abroad</em></h1>
+  <p class="hero-sub">B.Tech CSC (6th Sem) → MS Europe · Nepal Passport · Early Applicant Strategy · Dream → Safety framework across 7 countries</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-val">Sep '27</span><span class="stat-label">Target Start</span></div>
+    <div class="stat"><span class="stat-val">18mo</span><span class="stat-label">Prep Window</span></div>
+    <div class="stat"><span class="stat-val">7+</span><span class="stat-label">Countries</span></div>
+    <div class="stat"><span class="stat-val">15+</span><span class="stat-label">Universities</span></div>
+    <div class="stat"><span class="stat-val">8+</span><span class="stat-label">Scholarships</span></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- TIMELINE -->
+<section id="timeline">
+  <div class="section-eyebrow">Phase by Phase</div>
+  <div class="section-title">18-Month Roadmap</div>
+
+  <div class="alert">
+    <strong>Early Applicant Goal:</strong> Complete all exams and documents by <strong>August 2026</strong> — before most European application portals open in September–October 2026. Being an early applicant improves scholarship chances (Holland Scholarship, SI Scholarship) and admission outcomes.
+  </div>
+
+  <div class="timeline">
+
+    <!-- P1 -->
+    <div class="phase">
+      <div class="phase-dot now"></div>
+      <div class="phase-inner">
+        <div class="phase-time">Mar – Apr 2025</div>
+        <div class="phase-body">
+          <div class="phase-name">📍 Research & Registration <span class="badge now">YOU ARE HERE</span></div>
+          <div class="phase-chips">
+            <span class="chip">Finalize country shortlist</span>
+            <span class="chip">Research 15–20 universities</span>
+            <span class="chip exam">Register for IELTS (July slot)</span>
+            <span class="chip exam">Begin GRE prep (Verbal + Quant)</span>
+            <span class="chip doc">Identify 3 LOR professors</span>
+            <span class="chip">Deep-dive DAAD.de + uni websites</span>
+            <span class="chip">Make deadline tracker spreadsheet</span>
+          </div>
+        </div>
+      </div>
+      <hr class="phase-sep">
+    </div>
+
+    <!-- P2 -->
+    <div class="phase">
+      <div class="phase-dot"></div>
+      <div class="phase-inner">
+        <div class="phase-time">May 2025</div>
+        <div class="phase-body">
+          <div class="phase-name">📝 6th Sem Exams · Document Collection Begins</div>
+          <div class="phase-chips">
+            <span class="chip exam">6th Sem final exams</span>
+            <span class="chip doc">Collect 1–6th sem marksheets after results</span>
+            <span class="chip doc">Draft email to LOR professors</span>
+            <span class="chip">Brainstorm SOP stories — projects, research, goals</span>
+            <span class="chip exam">Continue daily GRE prep (Magoosh/Manhattan)</span>
+          </div>
+        </div>
+      </div>
+      <hr class="phase-sep">
+    </div>
+
+    <!-- P3 -->
+    <div class="phase">
+      <div class="phase-dot"></div>
+      <div class="phase-inner">
+        <div class="phase-time">Jun – Jul 2025</div>
+        <div class="phase-body">
+          <div class="phase-name">🎯 Exam Season · APS Application <span class="badge key">CRITICAL</span></div>
+          <div class="phase-chips">
+            <span class="chip apply">Apply for APS Certificate — Rs. 18,000 (aps-india.de)</span>
+            <span class="chip exam">GIVE IELTS — Target 7.0+ (6.5 Writing min)</span>
+            <span class="chip exam">GIVE GRE — Target 320+ (Q165+ V155+)</span>
+            <span class="chip doc">Formally request LORs from 3 professors</span>
+            <span class="chip">Write SOP v1 draft — 3 versions (dream/target/safety)</span>
+            <span class="chip">Research Erasmus Mundus CS programs (eacea.ec.europa.eu)</span>
+          </div>
+        </div>
+      </div>
+      <hr class="phase-sep">
+    </div>
+
+    <!-- P4 -->
+    <div class="phase">
+      <div class="phase-dot"></div>
+      <div class="phase-inner">
+        <div class="phase-time">Aug – Nov 2025</div>
+        <div class="phase-body">
+          <div class="phase-name">✍️ 7th Semester · SOP Drafting · LOR Collection</div>
+          <div class="phase-chips">
+            <span class="chip milestone">Receive IELTS + GRE scores</span>
+            <span class="chip exam">Retake if score below target (Aug–Sep)</span>
+            <span class="chip milestone">Receive APS Certificate</span>
+            <span class="chip doc">Finalize LOR content with each professor</span>
+            <span class="chip">SOP v2 — program-specific tailoring</span>
+            <span class="chip">Build academic CV — projects, GitHub, hackathons</span>
+            <span class="chip exam">GATE registration (Sep–Oct) if India backup needed</span>
+            <span class="chip">Lock final 12–15 university shortlist with deadlines</span>
+          </div>
+        </div>
+      </div>
+      <hr class="phase-sep">
+    </div>
+
+    <!-- P5 -->
+    <div class="phase">
+      <div class="phase-dot"></div>
+      <div class="phase-inner">
+        <div class="phase-time">Dec 2025 – Feb 2026</div>
+        <div class="phase-body">
+          <div class="phase-name">🔧 8th Semester Begins · Document Finalization</div>
+          <div class="phase-chips">
+            <span class="chip exam">GATE exam — Feb 2026 (India backup)</span>
+            <span class="chip doc">Collect all 3 LORs (on letterhead, sealed)</span>
+            <span class="chip">SOP v3 — peer reviewed (seniors, mentor)</span>
+            <span class="chip apply">Create UniAssist account (Germany)</span>
+            <span class="chip apply">Create Studielink account (Netherlands)</span>
+            <span class="chip">Deep research on individual program requirements</span>
+          </div>
+        </div>
+      </div>
+      <hr class="phase-sep">
+    </div>
+
+    <!-- P6 -->
+    <div class="phase">
+      <div class="phase-dot"></div>
+      <div class="phase-inner">
+        <div class="phase-time">Mar – May 2026</div>
+        <div class="phase-body">
+          <div class="phase-name">🎓 Final Semester · Pre-Application Polish</div>
+          <div class="phase-chips">
+            <span class="chip exam">8th Sem final exams (May 2026)</span>
+            <span class="chip">Finalize all SOPs — program-specific, proofread</span>
+            <span class="chip">GitHub portfolio cleanup + README polish</span>
+            <span class="chip doc">Notarize/attest critical documents</span>
+            <span class="chip">Research ETH/TU Munich interview prep</span>
+            <span class="chip apply">Erasmus Mundus deadline — check Nov 2026 (apply early)</span>
+          </div>
+        </div>
+      </div>
+      <hr class="phase-sep">
+    </div>
+
+    <!-- P7 -->
+    <div class="phase">
+      <div class="phase-dot"></div>
+      <div class="phase-inner">
+        <div class="phase-time">Jun – Aug 2026</div>
+        <div class="phase-body">
+          <div class="phase-name">🏁 GRADUATION · Final Prep Sprint <span class="badge key">ALL DOCS READY</span></div>
+          <div class="phase-chips">
+            <span class="chip milestone">GRADUATION — Collect Degree Certificate</span>
+            <span class="chip doc">Official transcripts from university (sealed)</span>
+            <span class="chip doc">Apostille / Attestation of degree + marksheets</span>
+            <span class="chip doc">Updated LORs on official letterhead</span>
+            <span class="chip">Final SOP revisions — tailored per each uni</span>
+            <span class="chip apply">Create accounts on all university portals</span>
+            <span class="chip apply">ETH Zurich portal opens — prepare application</span>
+          </div>
+        </div>
+      </div>
+      <hr class="phase-sep">
+    </div>
+
+    <!-- P8 -->
+    <div class="phase">
+      <div class="phase-dot"></div>
+      <div class="phase-inner">
+        <div class="phase-time">Sep – Oct 2026</div>
+        <div class="phase-body">
+          <div class="phase-name">🚀 APPLICATION WAVE 1 <span class="badge app">EARLY APPLICANT</span></div>
+          <div class="phase-chips">
+            <span class="chip apply">Netherlands — Apply via Studielink (Oct 1)</span>
+            <span class="chip apply">ETH Zurich — Submit application (Sep–Oct deadline)</span>
+            <span class="chip apply">EPFL — Submit application (Oct deadline)</span>
+            <span class="chip apply">KTH Sweden — Apply (Oct 15 deadline)</span>
+            <span class="chip apply">Aalto Finland — Apply (Oct 31 deadline)</span>
+          </div>
+        </div>
+      </div>
+      <hr class="phase-sep">
+    </div>
+
+    <!-- P9 -->
+    <div class="phase">
+      <div class="phase-dot"></div>
+      <div class="phase-inner">
+        <div class="phase-time">Nov 2026 – Jan 2027</div>
+        <div class="phase-body">
+          <div class="phase-name">📨 Application Wave 2 — Ireland, Norway, Germany direct</div>
+          <div class="phase-chips">
+            <span class="chip apply">Trinity College Dublin — Apply (Nov/Dec)</span>
+            <span class="chip apply">University College Dublin — Apply</span>
+            <span class="chip apply">NTNU Norway — Apply (Dec–Feb deadline)</span>
+            <span class="chip apply">University of Oslo — Apply</span>
+            <span class="chip apply">Netherlands — Final Studielink deadline Jan 15</span>
+            <span class="chip apply">TU Munich — Direct portal (Dec–Jan opens)</span>
+            <span class="chip apply">DAAD Scholarship — Apply separately (daad.de)</span>
+            <span class="chip apply">Erasmus Mundus — Submit (Nov–Dec deadline)</span>
+          </div>
+        </div>
+      </div>
+      <hr class="phase-sep">
+    </div>
+
+    <!-- P10 -->
+    <div class="phase">
+      <div class="phase-dot"></div>
+      <div class="phase-inner">
+        <div class="phase-time">Feb – May 2027</div>
+        <div class="phase-body">
+          <div class="phase-name">📋 Germany UniAssist · Wave 3 · Decisions Arriving</div>
+          <div class="phase-chips">
+            <span class="chip apply">UniAssist Germany — Submit all (Apr–May deadline)</span>
+            <span class="chip apply">TU Berlin, RWTH Aachen, TU Darmstadt via UniAssist</span>
+            <span class="chip milestone">Receive decisions from Wave 1 (ETH, EPFL, Netherlands)</span>
+            <span class="chip apply">Holland Scholarship — Apply immediately on admission</span>
+            <span class="chip apply">SI Scholarship Sweden — Apply (Jan–Feb window)</span>
+            <span class="chip">Compare offer packages. Confirm best option.</span>
+          </div>
+        </div>
+      </div>
+      <hr class="phase-sep">
+    </div>
+
+    <!-- P11 -->
+    <div class="phase">
+      <div class="phase-dot"></div>
+      <div class="phase-inner">
+        <div class="phase-time">Jun – Aug 2027</div>
+        <div class="phase-body">
+          <div class="phase-name">✈️ Pre-Departure Prep</div>
+          <div class="phase-chips">
+            <span class="chip milestone">Accept offer + pay enrollment deposit</span>
+            <span class="chip doc">Apply for student visa (country-specific process)</span>
+            <span class="chip">Germany: Open blocked account (€11,208/yr required)</span>
+            <span class="chip">Health insurance setup</span>
+            <span class="chip">Student accommodation application (dorms)</span>
+            <span class="chip">DAAD disbursement setup</span>
+          </div>
+        </div>
+      </div>
+      <hr class="phase-sep">
+    </div>
+
+    <!-- Final -->
+    <div class="phase">
+      <div class="phase-dot"></div>
+      <div class="phase-inner">
+        <div class="phase-time">September 2027</div>
+        <div class="phase-body">
+          <div class="phase-name">🎓 DEPART · Masters Begins <span class="badge app">GOAL</span></div>
+          <div class="phase-chips">
+            <span class="chip milestone">Fly out · Orientation · Masters in CS begins</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- UNIVERSITIES -->
+<section id="universities">
+  <div class="section-eyebrow">Where to Apply</div>
+  <div class="section-title">University Shortlist</div>
+
+  <div class="cat-tabs">
+    <div class="cat-tab active-dream" onclick="switchTab('dream',this)">⭐ Dream</div>
+    <div class="cat-tab" onclick="switchTab('target',this)">🎯 Target</div>
+    <div class="cat-tab" onclick="switchTab('safety',this)">🛡️ Safety</div>
+  </div>
+
+  <!-- DREAM -->
+  <div class="cat-panel active" id="panel-dream">
+    <div class="uni-grid">
+      <div class="uni-card dream">
+        <div class="uni-country-label">🇨🇭 Switzerland</div>
+        <div class="uni-name">ETH Zurich</div>
+        <div class="uni-program">MSc Computer Science</div>
+        <div class="uni-tags">
+          <span class="uni-tag qs">QS #7 World</span>
+          <span class="uni-tag scholar">Excellence Scholarship</span>
+          <span class="uni-tag">GRE Optional</span>
+        </div>
+        <div class="uni-meta">
+          <span class="uni-deadline">Deadline: Sep–Oct 2026</span>
+          <span class="uni-fee">~€1,500/yr</span>
+        </div>
+      </div>
+      <div class="uni-card dream">
+        <div class="uni-country-label">🇨🇭 Switzerland</div>
+        <div class="uni-name">EPFL</div>
+        <div class="uni-program">MSc Computer Science</div>
+        <div class="uni-tags">
+          <span class="uni-tag qs">QS #35 World</span>
+          <span class="uni-tag scholar">Excellence-Master Fellowship</span>
+          <span class="uni-tag">AI/ML Strong</span>
+        </div>
+        <div class="uni-meta">
+          <span class="uni-deadline">Deadline: Oct 2026</span>
+          <span class="uni-fee">~€1,500/yr</span>
+        </div>
+      </div>
+      <div class="uni-card dream">
+        <div class="uni-country-label">🇩🇪 Germany</div>
+        <div class="uni-name">TU Munich</div>
+        <div class="uni-program">MSc Informatics</div>
+        <div class="uni-tags">
+          <span class="uni-tag free">FREE Tuition</span>
+          <span class="uni-tag qs">QS #37 World</span>
+          <span class="uni-tag scholar">DAAD Scholarship</span>
+        </div>
+        <div class="uni-meta">
+          <span class="uni-deadline">Deadline: May–Jun 2027</span>
+          <span class="uni-fee free-text">FREE + ~€150/sem admin</span>
+        </div>
+      </div>
+      <div class="uni-card dream">
+        <div class="uni-country-label">🇳🇱 Netherlands</div>
+        <div class="uni-name">TU Delft</div>
+        <div class="uni-program">MSc Computer Science</div>
+        <div class="uni-tags">
+          <span class="uni-tag qs">QS Top 60</span>
+          <span class="uni-tag scholar">Holland Scholarship €5,000</span>
+          <span class="uni-tag">Jan 15 Deadline</span>
+        </div>
+        <div class="uni-meta">
+          <span class="uni-deadline">Deadline: Jan 15, 2027</span>
+          <span class="uni-fee">~€2,300/yr</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TARGET -->
+  <div class="cat-panel" id="panel-target">
+    <div class="uni-grid">
+      <div class="uni-card target">
+        <div class="uni-country-label">🇩🇪 Germany</div>
+        <div class="uni-name">RWTH Aachen</div>
+        <div class="uni-program">MSc Computer Science</div>
+        <div class="uni-tags">
+          <span class="uni-tag free">FREE Tuition</span>
+          <span class="uni-tag scholar">DAAD Eligible</span>
+          <span class="uni-tag">QS Top 100</span>
+        </div>
+        <div class="uni-meta">
+          <span class="uni-deadline">Deadline: May 2027 (UniAssist)</span>
+          <span class="uni-fee free-text">FREE</span>
+        </div>
+      </div>
+      <div class="uni-card target">
+        <div class="uni-country-label">🇩🇪 Germany</div>
+        <div class="uni-name">TU Berlin</div>
+        <div class="uni-program">MSc CS / Computer Engineering</div>
+        <div class="uni-tags">
+          <span class="uni-tag free">FREE Tuition</span>
+          <span class="uni-tag scholar">DAAD Eligible</span>
+          <span class="uni-tag">Capital city</span>
+        </div>
+        <div class="uni-meta">
+          <span class="uni-deadline">Deadline: Jun 2027</span>
+          <span class="uni-fee free-text">FREE</span>
+        </div>
+      </div>
+      <div class="uni-card target">
+        <div class="uni-country-label">🇩🇪 Germany</div>
+        <div class="uni-name">KIT Karlsruhe</div>
+        <div class="uni-program">MSc Computer Science</div>
+        <div class="uni-tags">
+          <span class="uni-tag free">FREE Tuition</span>
+          <span class="uni-tag scholar">DAAD Eligible</span>
+          <span class="uni-tag">QS Top 150</span>
+        </div>
+        <div class="uni-meta">
+          <span class="uni-deadline">Deadline: Jun 2027</span>
+          <span class="uni-fee free-text">FREE</span>
+        </div>
+      </div>
+      <div class="uni-card target">
+        <div class="uni-country-label">🇳🇴 Norway</div>
+        <div class="uni-name">NTNU</div>
+        <div class="uni-program">MSc Computer Science</div>
+        <div class="uni-tags">
+          <span class="uni-tag free">FREE Tuition (All Int'l)</span>
+          <span class="uni-tag">QS Top 500</span>
+          <span class="uni-tag scholar">NORPART</span>
+        </div>
+        <div class="uni-meta">
+          <span class="uni-deadline">Deadline: Feb 2027</span>
+          <span class="uni-fee free-text">FREE (living costs ~€1,200/mo)</span>
+        </div>
+      </div>
+      <div class="uni-card target">
+        <div class="uni-country-label">🇳🇴 Norway</div>
+        <div class="uni-name">University of Oslo</div>
+        <div class="uni-program">MSc Informatics / Data Science</div>
+        <div class="uni-tags">
+          <span class="uni-tag free">FREE Tuition</span>
+          <span class="uni-tag">Research Focused</span>
+          <span class="uni-tag scholar">NORPART</span>
+        </div>
+        <div class="uni-meta">
+          <span class="uni-deadline">Deadline: Feb 2027</span>
+          <span class="uni-fee free-text">FREE</span>
+        </div>
+      </div>
+      <div class="uni-card target">
+        <div class="uni-country-label">🇳🇱 Netherlands</div>
+        <div class="uni-name">University of Amsterdam</div>
+        <div class="uni-program">MSc AI / Software Engineering</div>
+        <div class="uni-tags">
+          <span class="uni-tag scholar">Holland Scholarship</span>
+          <span class="uni-tag">Strong AI Research</span>
+        </div>
+        <div class="uni-meta">
+          <span class="uni-deadline">Deadline: Nov 2026 / Jan 15</span>
+          <span class="uni-fee">~€2,500/yr</span>
+        </div>
+      </div>
+      <div class="uni-card target">
+        <div class="uni-country-label">🇫🇮 Finland</div>
+        <div class="uni-name">Aalto University</div>
+        <div class="uni-program">MSc CS / Data Science</div>
+        <div class="uni-tags">
+          <span class="uni-tag scholar">Aalto Scholarship (top admits)</span>
+          <span class="uni-tag">QS Top 150</span>
+        </div>
+        <div class="uni-meta">
+          <span class="uni-deadline">Deadline: Jan 2027</span>
+          <span class="uni-fee">~€15,000/yr (scholarship possible)</span>
+        </div>
+      </div>
+      <div class="uni-card target">
+        <div class="uni-country-label">🇮🇪 Ireland</div>
+        <div class="uni-name">Trinity College Dublin</div>
+        <div class="uni-program">MSc Computer Science</div>
+        <div class="uni-tags">
+          <span class="uni-tag">QS Top 100</span>
+          <span class="uni-tag">EU Tech Hub</span>
+          <span class="uni-tag">Merit Scholarships</span>
+        </div>
+        <div class="uni-meta">
+          <span class="uni-deadline">Deadline: Nov–Dec 2026</span>
+          <span class="uni-fee">~€18,000/yr</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SAFETY -->
+  <div class="cat-panel" id="panel-safety">
+    <div class="uni-grid">
+      <div class="uni-card safety">
+        <div class="uni-country-label">🇩🇪 Germany</div>
+        <div class="uni-name">TU Darmstadt</div>
+        <div class="uni-program">MSc Computer Science</div>
+        <div class="uni-tags">
+          <span class="uni-tag free">FREE Tuition</span>
+          <span class="uni-tag">AI + Cybersecurity</span>
+        </div>
+        <div class="uni-meta">
+          <span class="uni-deadline">Deadline: Jun 2027 (UniAssist)</span>
+          <span class="uni-fee free-text">FREE</span>
+        </div>
+      </div>
+      <div class="uni-card safety">
+        <div class="uni-country-label">🇩🇪 Germany</div>
+        <div class="uni-name">University of Stuttgart</div>
+        <div class="uni-program">MSc Computer Science</div>
+        <div class="uni-tags">
+          <span class="uni-tag free">FREE Tuition</span>
+          <span class="uni-tag">Strong CS Department</span>
+        </div>
+        <div class="uni-meta">
+          <span class="uni-deadline">Deadline: Jun 2027</span>
+          <span class="uni-fee free-text">FREE</span>
+        </div>
+      </div>
+      <div class="uni-card safety">
+        <div class="uni-country-label">🇳🇱 Netherlands</div>
+        <div class="uni-name">TU/e Eindhoven</div>
+        <div class="uni-program">MSc CS / Data Science</div>
+        <div class="uni-tags">
+          <span class="uni-tag scholar">Holland Scholarship</span>
+          <span class="uni-tag">Industry Links</span>
+        </div>
+        <div class="uni-meta">
+          <span class="uni-deadline">Deadline: Jan 15, 2027</span>
+          <span class="uni-fee">~€2,300/yr</span>
+        </div>
+      </div>
+      <div class="uni-card safety">
+        <div class="uni-country-label">🇳🇱 Netherlands</div>
+        <div class="uni-name">University of Groningen</div>
+        <div class="uni-program">MSc Computing Science</div>
+        <div class="uni-tags">
+          <span class="uni-tag scholar">Holland Scholarship</span>
+          <span class="uni-tag">Lower competition</span>
+        </div>
+        <div class="uni-meta">
+          <span class="uni-deadline">Deadline: Jan 15, 2027</span>
+          <span class="uni-fee">~€2,100/yr</span>
+        </div>
+      </div>
+      <div class="uni-card safety">
+        <div class="uni-country-label">🇨🇿 Czech Republic</div>
+        <div class="uni-name">CTU Prague</div>
+        <div class="uni-program">MSc Open Informatics</div>
+        <div class="uni-tags">
+          <span class="uni-tag free">Very Low Fees</span>
+          <span class="uni-tag">EU Country</span>
+          <span class="uni-tag">Low cost of living</span>
+        </div>
+        <div class="uni-meta">
+          <span class="uni-deadline">Deadline: Mar–Apr 2027</span>
+          <span class="uni-fee">~€3,000–4,000/yr</span>
+        </div>
+      </div>
+      <div class="uni-card safety">
+        <div class="uni-country-label">🇪🇪 Estonia</div>
+        <div class="uni-name">University of Tartu</div>
+        <div class="uni-program">MSc CS / Cybersecurity</div>
+        <div class="uni-tags">
+          <span class="uni-tag scholar">Estonian Govt Scholarship</span>
+          <span class="uni-tag">Digital Nation</span>
+        </div>
+        <div class="uni-meta">
+          <span class="uni-deadline">Deadline: Apr 2027</span>
+          <span class="uni-fee">~€2,500/yr</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- COUNTRIES -->
+<section id="countries">
+  <div class="section-eyebrow">Country Breakdown</div>
+  <div class="section-title">Requirements by Country</div>
+
+  <div class="country-grid">
+
+    <!-- Germany -->
+    <div class="country-card">
+      <div class="country-header" onclick="toggleCountry(this)">
+        <span class="flag">🇩🇪</span>
+        <div class="country-info">
+          <div class="country-name">Germany</div>
+          <div class="country-tagline">Free tuition · DAAD scholarship · APS + UniAssist required</div>
+        </div>
+        <div class="country-pills">
+          <span class="pill green">FREE Tuition</span>
+          <span class="pill amber">APS Cert</span>
+          <span class="pill blue">UniAssist</span>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="country-body">
+        <p>Germany's public universities charge zero tuition — just a semester contribution of ~€150–350 covering public transport + student union. The biggest draw for international students on any budget. Research portal: <strong>daad.de</strong></p>
+        <div class="req-grid">
+          <div class="req-item"><span>→</span>APS Certificate (Rs. 18,000 · 2–3 weeks)</div>
+          <div class="req-item"><span>→</span>IELTS 6.5+ / TOEFL 90+</div>
+          <div class="req-item"><span>→</span>GRE/GMAT (most top programs)</div>
+          <div class="req-item"><span>→</span>Motivation Letter / SOP</div>
+          <div class="req-item"><span>→</span>CV / Resume</div>
+          <div class="req-item"><span>→</span>3 Letters of Recommendation</div>
+          <div class="req-item"><span>→</span>Degree Certificate + Transcripts</div>
+          <div class="req-item"><span>→</span>Passport copy</div>
+        </div>
+        <div class="info-boxes">
+          <div class="info-box">
+            <strong>APS Certificate — aps-india.de</strong>
+            <p>Academic Preliminary Review — required for ALL German universities. Apply after collecting marksheets. Rs. 18,000. Processing: 2–3 weeks. Budget 2 months to be safe. Apply June 2025.</p>
+          </div>
+          <div class="info-box">
+            <strong>UniAssist Portal — uni-assist.de</strong>
+            <p>Apply through UniAssist for most German universities. First university: ~Rs. 7,000. Each additional: ~Rs. 3,000. Applying to 5 unis = ~Rs. 19,000 total. Deadline: typically May–June for Wintersemester (Oct start).</p>
+          </div>
+          <div class="info-box">
+            <strong>DAAD Scholarship — daad.de</strong>
+            <p>Germany's main international scholarship. Up to €850–1,200/month stipend + health insurance. Apply separately from admission. Open to Nepal passport holders. Apply November 2026 for Fall 2027 start.</p>
+          </div>
+          <div class="info-box">
+            <strong>Blocked Account (Visa)</strong>
+            <p>For student visa, you need a blocked account with €11,208 (€934/month × 12). Open via Expatrio or Fintiba. Do this June 2027 after getting admission.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Netherlands -->
+    <div class="country-card">
+      <div class="country-header" onclick="toggleCountry(this)">
+        <span class="flag">🇳🇱</span>
+        <div class="country-info">
+          <div class="country-name">Netherlands</div>
+          <div class="country-tagline">English-taught · Holland Scholarship · Jan 15 Studielink deadline</div>
+        </div>
+        <div class="country-pills">
+          <span class="pill amber">Holland Scholarship €5k</span>
+          <span class="pill blue">Studielink</span>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="country-body">
+        <p>Almost all Master's programs in Netherlands are in English. Reasonable fees (~€2,000–4,000/yr) and the Holland Scholarship offers €5,000 one-time for non-EEA students — apply immediately on getting an offer.</p>
+        <div class="req-grid">
+          <div class="req-item"><span>→</span>IELTS 6.5–7.0</div>
+          <div class="req-item"><span>→</span>GRE (varies by program)</div>
+          <div class="req-item"><span>→</span>Motivation Letter / SOP</div>
+          <div class="req-item"><span>→</span>2–3 LORs</div>
+          <div class="req-item"><span>→</span>Bachelor's Degree + Transcripts</div>
+          <div class="req-item"><span>→</span>CV</div>
+        </div>
+        <div class="info-boxes">
+          <div class="info-box">
+            <strong>Studielink — studielink.nl</strong>
+            <p>Central application portal for all Dutch universities. Create account September 2026. Deadline for most programs: January 15, 2027. Some competitive programs close November 2026 — be early!</p>
+          </div>
+          <div class="info-box">
+            <strong>Holland Scholarship</strong>
+            <p>€5,000 one-time grant for first year. Apply immediately after receiving admission offer via the university's scholarship portal. Very popular — applications fill fast after admit decisions.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Norway -->
+    <div class="country-card">
+      <div class="country-header" onclick="toggleCountry(this)">
+        <span class="flag">🇳🇴</span>
+        <div class="country-info">
+          <div class="country-name">Norway</div>
+          <div class="country-tagline">FREE tuition for ALL international students at public universities</div>
+        </div>
+        <div class="country-pills">
+          <span class="pill green">FREE for Everyone</span>
+          <span class="pill amber">NORPART Nepal</span>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="country-body">
+        <p>Norway's public universities charge zero tuition to ALL students regardless of nationality. You only pay living costs (~€1,200–1,500/month in Oslo/Trondheim). This makes it an outstanding, underrated option for Nepal passport holders — free education in a highly developed country.</p>
+        <div class="req-grid">
+          <div class="req-item"><span>→</span>IELTS 6.5+</div>
+          <div class="req-item"><span>→</span>No GRE required (most programs)</div>
+          <div class="req-item"><span>→</span>Motivation Letter</div>
+          <div class="req-item"><span>→</span>2 LORs</div>
+          <div class="req-item"><span>→</span>Bachelor's Degree + Transcripts</div>
+          <div class="req-item"><span>→</span>CV</div>
+        </div>
+        <div class="info-boxes">
+          <div class="info-box">
+            <strong>Application Process</strong>
+            <p>Apply directly via NTNU (ntnu.edu) or UiO (uio.no) portals. Deadline: February 2027 for Fall 2027. No centralized portal like Germany. Both NTNU and UiO have strong CS departments with AI/ML specializations.</p>
+          </div>
+          <div class="info-box">
+            <strong>NORPART — South Asia Scholarship</strong>
+            <p>Norway–South Asia academic partnership. Living stipend for students from India, Nepal and South Asia. Check ntnu.edu/norpart. Living costs in Norway are high (~NOK 18,000+/month) so this help is significant.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Switzerland -->
+    <div class="country-card">
+      <div class="country-header" onclick="toggleCountry(this)">
+        <span class="flag">🇨🇭</span>
+        <div class="country-info">
+          <div class="country-name">Switzerland</div>
+          <div class="country-tagline">ETH Zurich + EPFL — world top 10 CS · Excellence Scholarship</div>
+        </div>
+        <div class="country-pills">
+          <span class="pill purple">Dream Tier</span>
+          <span class="pill amber">Excellence Scholarship</span>
+          <span class="pill amber">Swiss Govt Scholarship</span>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="country-body">
+        <p>ETH Zurich and EPFL are consistently in the world top 10 for CS. Tuition is low (~CHF 1,500/yr) but living costs are high. Excellence Scholarships can cover living costs for exceptional students. Nepal passport holders can also apply for Swiss Government Excellence Scholarships.</p>
+        <div class="req-grid">
+          <div class="req-item"><span>→</span>IELTS 7.0+ (or German B2)</div>
+          <div class="req-item"><span>→</span>GRE not always required</div>
+          <div class="req-item"><span>→</span>Strong CGPA (8.0+ preferred)</div>
+          <div class="req-item"><span>→</span>Motivation Letter (critical)</div>
+          <div class="req-item"><span>→</span>3 LORs (academic preferred)</div>
+          <div class="req-item"><span>→</span>Research experience is a plus</div>
+        </div>
+        <div class="info-boxes">
+          <div class="info-box">
+            <strong>ETH Excellence Scholarship</strong>
+            <p>Full scholarship covering tuition + CHF 1,100/month living stipend. Very competitive. Apply simultaneously with admission application. Deadline typically December 2026 for Fall 2027 start.</p>
+          </div>
+          <div class="info-box">
+            <strong>Swiss Govt Excellence Scholarship</strong>
+            <p>Apply via Embassy of Switzerland in Nepal (or India). Covers tuition + CHF 1,920/month + health insurance. Deadline: typically November 2026. Apply through government channel, not ETH directly.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ireland -->
+    <div class="country-card">
+      <div class="country-header" onclick="toggleCountry(this)">
+        <span class="flag">🇮🇪</span>
+        <div class="country-info">
+          <div class="country-name">Ireland</div>
+          <div class="country-tagline">EU tech hub · English language · 2-yr post-study work visa</div>
+        </div>
+        <div class="country-pills">
+          <span class="pill blue">English Medium</span>
+          <span class="pill amber">Merit Scholarships</span>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="country-body">
+        <p>Ireland hosts Google, Meta, Apple, Microsoft EU headquarters — strong CS job market. English-speaking, no language barrier. Higher tuition (~€15,000–25,000/yr) but STEM graduates get a 2-year post-study work visa (Stay Back visa).</p>
+        <div class="req-grid">
+          <div class="req-item"><span>→</span>IELTS 6.5–7.0</div>
+          <div class="req-item"><span>→</span>GRE not usually required</div>
+          <div class="req-item"><span>→</span>Motivation Letter / Personal Statement</div>
+          <div class="req-item"><span>→</span>2 LORs</div>
+          <div class="req-item"><span>→</span>Bachelor's Degree + Transcripts</div>
+          <div class="req-item"><span>→</span>CV</div>
+        </div>
+        <div class="info-box" style="margin-top:12px">
+          <strong>Merit Scholarships</strong>
+          <p>Trinity College Dublin, UCD, DCU all offer partial scholarships (€5,000–€10,000) for international students with strong academics. Apply at time of admission. Also check irishfellowships.ie and hea.ie for external funding opportunities.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sweden -->
+    <div class="country-card">
+      <div class="country-header" onclick="toggleCountry(this)">
+        <span class="flag">🇸🇪</span>
+        <div class="country-info">
+          <div class="country-name">Sweden</div>
+          <div class="country-tagline">KTH, Chalmers · Swedish Institute Scholarship (full funding)</div>
+        </div>
+        <div class="country-pills">
+          <span class="pill amber">SI Scholarship</span>
+          <span class="pill blue">Oct 15 Deadline</span>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="country-body">
+        <p>Sweden charges non-EU students ~€14,000–20,000/yr tuition. Only worth it with the Swedish Institute (SI) Scholarship — one of the most generous in Europe (full tuition + living costs). Competitive but Nepal = developing nation = higher priority category.</p>
+        <div class="req-grid">
+          <div class="req-item"><span>→</span>IELTS 6.5+ (some 7.0)</div>
+          <div class="req-item"><span>→</span>GRE not required</div>
+          <div class="req-item"><span>→</span>Motivation Letter</div>
+          <div class="req-item"><span>→</span>2 LORs</div>
+          <div class="req-item"><span>→</span>Bachelor's Degree + Transcripts</div>
+          <div class="req-item"><span>→</span>Leadership/community work helps</div>
+        </div>
+        <div class="info-box" style="margin-top:12px">
+          <strong>Swedish Institute Scholarship — si.se</strong>
+          <p>Full scholarship: tuition waiver + SEK 11,000/month living allowance. Apply via si.se after applying to universities (application window Jan–Feb 2027). Extremely competitive — only apply if your profile is strong and you have community/leadership activities. Without SI Scholarship, Swedish universities are expensive.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- EXAMS -->
+<section id="exams">
+  <div class="section-eyebrow">Required Exams</div>
+  <div class="section-title">Exam Planner</div>
+
+  <div class="exam-grid">
+    <div class="exam-card">
+      <div class="exam-icon">📝</div>
+      <div class="exam-title">IELTS</div>
+      <div class="exam-sub">a.k.a. POL — Proof of Language</div>
+      <div class="exam-rows">
+        <div class="exam-row"><span class="label">Target Score</span><span class="value">7.0+ Overall (6.5 min)</span></div>
+        <div class="exam-row"><span class="label">Register</span><span class="value">March–April 2025</span></div>
+        <div class="exam-row"><span class="label">Give Exam</span><span class="value">July 2025</span></div>
+        <div class="exam-row"><span class="label">Prep Time</span><span class="value">3–4 months</span></div>
+        <div class="exam-row"><span class="label">Score Valid</span><span class="value">2 years</span></div>
+        <div class="exam-row"><span class="label">Cost</span><span class="value">~Rs. 17,000</span></div>
+        <div class="exam-row"><span class="label">Accepted By</span><span class="value">All listed countries</span></div>
+      </div>
+    </div>
+
+    <div class="exam-card">
+      <div class="exam-icon">🧮</div>
+      <div class="exam-title">GRE General</div>
+      <div class="exam-sub">World-ranked university requirement</div>
+      <div class="exam-rows">
+        <div class="exam-row"><span class="label">Target Score</span><span class="value">320+ (Q165+ V155+)</span></div>
+        <div class="exam-row"><span class="label">Register</span><span class="value">April 2025</span></div>
+        <div class="exam-row"><span class="label">Give Exam</span><span class="value">July–Aug 2025</span></div>
+        <div class="exam-row"><span class="label">Prep Time</span><span class="value">3–6 months</span></div>
+        <div class="exam-row"><span class="label">Score Valid</span><span class="value">5 years</span></div>
+        <div class="exam-row"><span class="label">Cost</span><span class="value">~$220 (≈ Rs. 18,000)</span></div>
+        <div class="exam-row"><span class="label">Needed For</span><span class="value">ETH, TU Munich, some Dutch</span></div>
+      </div>
+    </div>
+
+    <div class="exam-card">
+      <div class="exam-icon">📜</div>
+      <div class="exam-title">APS Certificate</div>
+      <div class="exam-sub">Germany-only — Academic Evaluation</div>
+      <div class="exam-rows">
+        <div class="exam-row"><span class="label">Cost</span><span class="value">Rs. 18,000</span></div>
+        <div class="exam-row"><span class="label">Apply In</span><span class="value">June 2025</span></div>
+        <div class="exam-row"><span class="label">Processing</span><span class="value">2–3 weeks</span></div>
+        <div class="exam-row"><span class="label">Valid For</span><span class="value">Germany only</span></div>
+        <div class="exam-row"><span class="label">Portal</span><span class="value">aps-india.de</span></div>
+        <div class="exam-row"><span class="label">Docs Needed</span><span class="value">Passport, Degree, Marksheets</span></div>
+        <div class="exam-row"><span class="label">Mandatory</span><span class="value">ALL German universities</span></div>
+      </div>
+    </div>
+
+    <div class="exam-card">
+      <div class="exam-icon">🏛️</div>
+      <div class="exam-title">GATE</div>
+      <div class="exam-sub">India backup · IIT M.Tech · PSU jobs</div>
+      <div class="exam-rows">
+        <div class="exam-row"><span class="label">Purpose</span><span class="value">India safety net</span></div>
+        <div class="exam-row"><span class="label">Register</span><span class="value">Sep–Oct 2025</span></div>
+        <div class="exam-row"><span class="label">Give Exam</span><span class="value">February 2026</span></div>
+        <div class="exam-row"><span class="label">Prep Time</span><span class="value">4–6 months (parallel)</span></div>
+        <div class="exam-row"><span class="label">Score Valid</span><span class="value">3 years</span></div>
+        <div class="exam-row"><span class="label">Cost</span><span class="value">~Rs. 1,700</span></div>
+        <div class="exam-row"><span class="label">Use If</span><span class="value">Abroad plans fall through</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SCHOLARSHIPS -->
+<section id="scholarships">
+  <div class="section-eyebrow">Funding · Nepal Passport Holders</div>
+  <div class="section-title">Scholarship Opportunities</div>
+
+  <div class="alert">
+    <strong>Nepal Passport Advantage:</strong> Nepal is classified as a <strong>developing nation / LDC (Least Developed Country)</strong> by most international organizations. This gives you priority or higher chances in scholarships like Erasmus Mundus (Category A), Swedish Institute, Swiss Excellence, and several bilateral scholarship programs. Leverage this in every application.
+  </div>
+
+  <div class="scholar-grid">
+    <div class="scholar-card">
+      <div class="nepal-badge">✓ Nepal Passport Eligible</div>
+      <div class="scholar-title">DAAD Scholarship</div>
+      <div class="scholar-country">🇩🇪 Germany · daad.de</div>
+      <div class="scholar-desc">Germany's primary international scholarship. Apply separately via daad.de after applying to universities. Open to ALL nationalities including Nepal. Covers living costs, health insurance, and travel allowance. Apply November 2026.</div>
+      <div class="scholar-amount">€850–1,200 <span class="scholar-amount-label">/month + health insurance</span></div>
+    </div>
+
+    <div class="scholar-card">
+      <div class="nepal-badge">✓ Non-EEA Eligible</div>
+      <div class="scholar-title">Holland Scholarship</div>
+      <div class="scholar-country">🇳🇱 Netherlands · studyinholland.nl</div>
+      <div class="scholar-desc">One-time €5,000 grant for non-EEA students admitted to a Dutch university. Apply via university portal immediately after receiving admission offer. Very popular — apply within days of offer. Available at TU Delft, UvA, TU/e, Groningen.</div>
+      <div class="scholar-amount">€5,000 <span class="scholar-amount-label">one-time grant (first year)</span></div>
+    </div>
+
+    <div class="scholar-card">
+      <div class="nepal-badge">✓ Nepal = Category A</div>
+      <div class="scholar-title">Erasmus Mundus</div>
+      <div class="scholar-country">🇪🇺 European Union · eacea.ec.europa.eu</div>
+      <div class="scholar-desc">Joint Master's across 2–3 EU universities. Nepal is "Category A" (developing nation) — highest priority for full funding. Highly competitive but full scholarship. Research CS-relevant programs on EACEA database. Apply Nov 2026.</div>
+      <div class="scholar-amount">€1,000–1,400 <span class="scholar-amount-label">/month + tuition waiver</span></div>
+    </div>
+
+    <div class="scholar-card">
+      <div class="nepal-badge">✓ Nepal = Developing Nation</div>
+      <div class="scholar-title">Swedish Institute Scholarship</div>
+      <div class="scholar-country">🇸🇪 Sweden · si.se</div>
+      <div class="scholar-desc">Full scholarship covering tuition + generous living costs. Apply via si.se after applying to Swedish universities. Application window Jan–Feb 2027 for Fall 2027. Nepal = developing country = higher priority. Very competitive — requires strong community/leadership profile alongside academics.</div>
+      <div class="scholar-amount">SEK 11,000 <span class="scholar-amount-label">/month + full tuition waiver</span></div>
+    </div>
+
+    <div class="scholar-card">
+      <div class="nepal-badge">✓ Nepal Eligible</div>
+      <div class="scholar-title">ETH Excellence Scholarship</div>
+      <div class="scholar-country">🇨🇭 Switzerland · ethz.ch</div>
+      <div class="scholar-desc">Prestigious full scholarship for exceptional MS students at ETH Zurich. Apply simultaneously with admission application (Oct 2026). Highly competitive — requires strong academic record, research experience, and compelling motivation. Worth applying if targeting ETH.</div>
+      <div class="scholar-amount">CHF 1,100 <span class="scholar-amount-label">/month + tuition waiver</span></div>
+    </div>
+
+    <div class="scholar-card">
+      <div class="nepal-badge">✓ Apply via Nepal Embassy</div>
+      <div class="scholar-title">Swiss Govt Excellence Scholarship</div>
+      <div class="scholar-country">🇨🇭 Switzerland · sbfi.admin.ch</div>
+      <div class="scholar-desc">Government scholarship for postgraduate research/study at Swiss universities. Apply through the Swiss Embassy in Nepal (or Indian Embassy) — NOT through ETH directly. Deadline typically November 2026. Full funding including monthly stipend and health coverage.</div>
+      <div class="scholar-amount">CHF 1,920 <span class="scholar-amount-label">/month + tuition + health insurance</span></div>
+    </div>
+
+    <div class="scholar-card">
+      <div class="nepal-badge">✓ South Asia Priority</div>
+      <div class="scholar-title">NORPART Scholarship</div>
+      <div class="scholar-country">🇳🇴 Norway · ntnu.edu/norpart</div>
+      <div class="scholar-desc">Norway–South Asia academic partnership program. Living stipend for students from India, Nepal, and South Asia. Since Norway already has free tuition, this helps cover the high Norwegian living costs. Check NTNU and UiO partnership pages.</div>
+      <div class="scholar-amount">NOK ~18,000 <span class="scholar-amount-label">/month living support</span></div>
+    </div>
+
+    <div class="scholar-card">
+      <div class="nepal-badge">✓ Merit Based</div>
+      <div class="scholar-title">Aalto University Scholarship</div>
+      <div class="scholar-country">🇫🇮 Finland · aalto.fi</div>
+      <div class="scholar-desc">Aalto awards 50–100% tuition waivers to top international admits automatically with the admission offer. If your GPA and academic profile are strong, this effectively makes Aalto very affordable — no separate application needed for the scholarship.</div>
+      <div class="scholar-amount">50–100% <span class="scholar-amount-label">tuition waiver (with admission)</span></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- DOCUMENTS -->
+<section id="docs">
+  <div class="section-eyebrow">Master Checklist</div>
+  <div class="section-title">Documents to Prepare</div>
+  <p style="color:var(--muted);margin-bottom:24px;font-size:14px">Click items to mark as complete. Your progress is saved in this browser.</p>
+
+  <div class="checklist" id="checklist"></div>
+</section>
+
+<div class="footer">
+  <span class="footer-brand">MS-ABROAD-ROADMAP · B.Tech CSC → Europe Fall 2027</span>
+  <span>Nepal Passport · Early Applicant Strategy · Updated March 2025</span>
+</div>
+
+<script>
+// Tab switching
+function switchTab(type, el) {
+  document.querySelectorAll('.cat-tab').forEach(t => t.className = 'cat-tab');
+  document.querySelectorAll('.cat-panel').forEach(p => { p.classList.remove('active'); });
+  el.className = 'cat-tab active-' + type;
+  document.getElementById('panel-' + type).classList.add('active');
+}
+
+// Country accordion
+function toggleCountry(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.chevron');
+  const isOpen = body.classList.contains('open');
+  document.querySelectorAll('.country-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.chevron').forEach(c => c.classList.remove('open'));
+  if (!isOpen) {
+    body.classList.add('open');
+    chevron.classList.add('open');
+  }
+}
+
+// Checklist
+const ITEMS = [
+  'IELTS / TOEFL Score (7.0+ target)',
+  'GRE Score (320+ target)',
+  'APS Certificate — Germany',
+  'GATE Score (India backup)',
+  'Official Degree Certificate',
+  'All Semester Marksheets (1–8)',
+  'LOR #1 — Professor 1',
+  'LOR #2 — Professor 2',
+  'LOR #3 — Professor 3',
+  'SOP / Statement of Purpose',
+  'Motivation Letter (EU format)',
+  'Academic CV / Resume',
+  'Passport (valid 3+ years)',
+  'GitHub Portfolio / Projects cleaned',
+  'Notarized Degree + Transcripts',
+  'Apostille on Key Documents',
+  'UniAssist Account (Germany)',
+  'Studielink Account (Netherlands)',
+  'Bank Statements / Proof of Funds',
+  'Research Publication (if any)',
+  'DAAD Scholarship Application',
+  'Holland Scholarship Application',
+  'Erasmus Mundus Application',
+  'SI Scholarship Application (Sweden)',
+  'Swiss Govt Excellence Application',
+  'Health Insurance Documents',
+  'Student Visa Application',
+  'Blocked Account (Germany visa)',
+  'Accommodation Booking',
+];
+
+const saved = JSON.parse(localStorage.getItem('roadmap-2027') || '{}');
+const checklist = document.getElementById('checklist');
+
+ITEMS.forEach((item, i) => {
+  const el = document.createElement('div');
+  el.className = 'check-item' + (saved[i] ? ' done' : '');
+  el.innerHTML = `<div class="check-box"></div><span>${item}</span>`;
+  el.onclick = () => {
+    el.classList.toggle('done');
+    saved[i] = el.classList.contains('done');
+    localStorage.setItem('roadmap-2027', JSON.stringify(saved));
+  };
+  checklist.appendChild(el);
+});
+</script>
+</body>
+</html>
