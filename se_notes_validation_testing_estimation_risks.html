@@ -1,0 +1,449 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); background: transparent; }
+  .container { max-width: 100%; padding: 1.5rem 0; }
+  .nav { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .nav-btn {
+    padding: 6px 14px; font-size: 13px; font-weight: 500; border-radius: 20px;
+    border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary);
+    color: var(--color-text-secondary); cursor: pointer; transition: all 0.18s;
+  }
+  .nav-btn.active { background: #3C3489; color: #EEEDFE; border-color: #3C3489; }
+  .nav-btn:hover:not(.active) { background: var(--color-background-secondary); color: var(--color-text-primary); }
+  .section { display: none; }
+  .section.active { display: block; }
+  .card {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .card-title {
+    font-size: 15px; font-weight: 500; color: var(--color-text-primary);
+    margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px;
+  }
+  .badge {
+    font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 10px;
+  }
+  .badge-purple { background: #EEEDFE; color: #3C3489; }
+  .badge-teal { background: #E1F5EE; color: #0F6E56; }
+  .badge-amber { background: #FAEEDA; color: #854F0B; }
+  .badge-coral { background: #FAECE7; color: #993C1D; }
+  .badge-blue { background: #E6F1FB; color: #185FA5; }
+  .badge-red { background: #FCEBEB; color: #A32D2D; }
+  .badge-green { background: #EAF3DE; color: #3B6D11; }
+  p { font-size: 14px; line-height: 1.7; color: var(--color-text-secondary); margin-bottom: 0.6rem; }
+  p:last-child { margin-bottom: 0; }
+  .def-row { display: grid; grid-template-columns: 160px 1fr; gap: 8px 16px; margin-top: 0.5rem; }
+  .def-key { font-size: 13px; font-weight: 500; color: var(--color-text-primary); padding-top: 2px; }
+  .def-val { font-size: 13px; line-height: 1.6; color: var(--color-text-secondary); }
+  .formula-box {
+    background: var(--color-background-secondary);
+    border-left: 3px solid #534AB7;
+    border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+    padding: 0.75rem 1rem; margin: 0.75rem 0; font-family: var(--font-mono);
+    font-size: 13px; color: var(--color-text-primary); line-height: 1.8;
+  }
+  .formula-label { font-family: var(--font-sans); font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .h2 { font-size: 18px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.5rem; }
+  .tag { font-size: 12px; padding: 2px 10px; border-radius: 12px; background: var(--color-background-secondary); color: var(--color-text-secondary); border: 0.5px solid var(--color-border-tertiary); }
+  .highlight-box {
+    background: #EEEDFE; border-radius: var(--border-radius-md);
+    padding: 0.75rem 1rem; margin: 0.5rem 0;
+  }
+  .highlight-box p { color: #3C3489; font-size: 13px; margin: 0; }
+  .accent-row { display: flex; gap: 1rem; margin-top: 0.75rem; }
+  .accent-item { flex: 1; padding: 0.75rem; border-radius: var(--border-radius-md); }
+  .accent-green { background: #EAF3DE; }
+  .accent-green .accent-title { color: #3B6D11; font-size: 13px; font-weight: 500; }
+  .accent-green p { color: #3B6D11; font-size: 12px; }
+  .accent-red { background: #FCEBEB; }
+  .accent-red .accent-title { color: #A32D2D; font-size: 13px; font-weight: 500; }
+  .accent-red p { color: #A32D2D; font-size: 12px; }
+  .accent-blue { background: #E6F1FB; }
+  .accent-blue .accent-title { color: #185FA5; font-size: 13px; font-weight: 500; }
+  .accent-blue p { color: #185FA5; font-size: 12px; }
+  .metric-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; margin-top: 0.75rem; }
+  .metric { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 0.6rem 0.75rem; text-align: center; }
+  .metric-val { font-size: 20px; font-weight: 500; color: var(--color-text-primary); }
+  .metric-lbl { font-size: 11px; color: var(--color-text-tertiary); margin-top: 2px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; }
+  th { font-size: 12px; font-weight: 500; color: var(--color-text-secondary); text-align: left; padding: 6px 10px; border-bottom: 0.5px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  td { font-size: 13px; color: var(--color-text-secondary); padding: 7px 10px; border-bottom: 0.5px solid var(--color-border-tertiary); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  td:first-child { color: var(--color-text-primary); font-weight: 500; }
+</style>
+
+<div class="container">
+  <h2 class="sr-only">Software Engineering detailed notes on Validation/Verification, Testing, Project Estimation, and Risk Management</h2>
+
+  <div class="nav">
+    <button class="nav-btn active" onclick="show('vv')">Validation & Verification</button>
+    <button class="nav-btn" onclick="show('testing')">Testing Types</button>
+    <button class="nav-btn" onclick="show('estimation')">Project Estimation</button>
+    <button class="nav-btn" onclick="show('risks')">Risk Management</button>
+  </div>
+
+  <!-- SECTION 1: V&V -->
+  <div class="section active" id="sec-vv">
+    <div class="h2">Validation & Verification</div>
+    <div class="card">
+      <div class="card-title"><span class="badge badge-purple">Core Concept</span> The V&V Distinction</div>
+      <div class="accent-row">
+        <div class="accent-item accent-blue">
+          <div class="accent-title">Verification — "Are we building the product right?"</div>
+          <p>Checks that the software conforms to its specification. Internal process-oriented. Involves inspections, walkthroughs, reviews. No actual execution needed.</p>
+        </div>
+        <div class="accent-item accent-green">
+          <div class="accent-title">Validation — "Are we building the right product?"</div>
+          <p>Checks that the software meets the customer's actual needs. External user-oriented. Involves testing on real or simulated inputs. Software must be executable.</p>
+        </div>
+      </div>
+      <p style="margin-top:0.75rem;">Barry Boehm coined the classic distinction. Both V&V activities run throughout the software lifecycle — not just at the end.</p>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">Verification Activities</div>
+        <div class="def-row">
+          <div class="def-key">Requirements Review</div><div class="def-val">Check specs for completeness, consistency, and feasibility early on.</div>
+          <div class="def-key">Design Walkthrough</div><div class="def-val">Peer inspection of architecture and detailed design documents.</div>
+          <div class="def-key">Code Inspection</div><div class="def-val">Structured reading of source code against standards (e.g. Fagan inspection).</div>
+          <div class="def-key">Static Analysis</div><div class="def-val">Tool-based analysis (linters, SAST tools) without executing code.</div>
+          <div class="def-key">Formal Verification</div><div class="def-val">Mathematical proof that code satisfies its formal specification (e.g. model checking).</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Validation Activities</div>
+        <div class="def-row">
+          <div class="def-key">Unit Testing</div><div class="def-val">Execute individual modules in isolation to verify logic.</div>
+          <div class="def-key">Integration Testing</div><div class="def-val">Execute combined modules to verify interfaces and interactions.</div>
+          <div class="def-key">System Testing</div><div class="def-val">Execute the full system against all functional and non-functional requirements.</div>
+          <div class="def-key">Acceptance Testing</div><div class="def-val">User/client tests to confirm the system satisfies real business needs (UAT).</div>
+          <div class="def-key">Regression Testing</div><div class="def-val">Re-execute test suites after changes to catch unintended side effects.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="badge badge-teal">Key Principle</span> The V-Model</div>
+      <p>The V-Model maps each development phase to a corresponding testing phase. Each left-side phase produces a document/artifact that directly drives the right-side validation:</p>
+      <table>
+        <tr><th>Development Phase (Left)</th><th>↔</th><th>Testing Phase (Right)</th></tr>
+        <tr><td>Requirements Analysis</td><td style="text-align:center">↔</td><td>Acceptance Testing</td></tr>
+        <tr><td>System Design</td><td style="text-align:center">↔</td><td>System Testing</td></tr>
+        <tr><td>Architecture Design</td><td style="text-align:center">↔</td><td>Integration Testing</td></tr>
+        <tr><td>Module Design</td><td style="text-align:center">↔</td><td>Unit Testing</td></tr>
+        <tr><td colspan="3" style="text-align:center; color: var(--color-text-tertiary); font-size:12px;">Coding at the base of the V</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 2: TESTING -->
+  <div class="section" id="sec-testing">
+    <div class="h2">Testing Types</div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title"><span class="badge badge-blue">White-Box Testing</span></div>
+        <p>Also called glass-box, clear-box, or structural testing. Tester has full knowledge of the internal code structure, logic, and implementation.</p>
+        <div class="highlight-box"><p>Tests exercise specific paths, branches, conditions, and loops within the source code.</p></div>
+        <div class="def-row">
+          <div class="def-key">Statement coverage</div><div class="def-val">Every line of code is executed at least once.</div>
+          <div class="def-key">Branch coverage</div><div class="def-val">Every true/false branch of each decision is executed.</div>
+          <div class="def-key">Path coverage</div><div class="def-val">Every independent path through code is exercised (basis path testing).</div>
+          <div class="def-key">Condition coverage</div><div class="def-val">Each boolean sub-expression is evaluated to T and F.</div>
+        </div>
+        <div class="tag-row">
+          <span class="tag">Basis Path Testing</span><span class="tag">Cyclomatic Complexity</span><span class="tag">Loop Testing</span><span class="tag">Data Flow Testing</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="badge badge-coral">Black-Box Testing</span></div>
+        <p>Also called behavioral or functional testing. Tester has no knowledge of internal code. Focus is solely on input–output behavior against specifications.</p>
+        <div class="highlight-box" style="background:#FAECE7;"><p style="color:#993C1D">Tests are derived from requirements and specifications, not from code structure.</p></div>
+        <div class="def-row">
+          <div class="def-key">Equivalence Partitioning</div><div class="def-val">Divide input domain into classes; one test per class covers all values in it.</div>
+          <div class="def-key">Boundary Value Analysis</div><div class="def-val">Test at and just inside/outside the edges of input partitions.</div>
+          <div class="def-key">Decision Table Testing</div><div class="def-val">Tabulate combinations of conditions and corresponding actions.</div>
+          <div class="def-key">State Transition</div><div class="def-val">Test state changes triggered by inputs/events.</div>
+          <div class="def-key">Error Guessing</div><div class="def-val">Experience-based ad-hoc testing of likely error-prone areas.</div>
+        </div>
+        <div class="tag-row">
+          <span class="tag">Boundary Value Analysis</span><span class="tag">Equivalence Classes</span><span class="tag">Decision Table</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="badge badge-purple">Unit Testing</span></div>
+      <p>The smallest testable unit (function, method, class) is tested in isolation. Dependencies are replaced with stubs (simplified callees) or drivers (simplified callers) so each module is tested independently.</p>
+      <div class="def-row">
+        <div class="def-key">Scope</div><div class="def-val">Individual module or function, tested in isolation from the rest of the system.</div>
+        <div class="def-key">Who performs</div><div class="def-val">Typically the developer who wrote the code (sometimes separate QA). Often automated (JUnit, PyTest, Jest, etc.).</div>
+        <div class="def-key">Stubs</div><div class="def-val">Dummy modules that replace callees — return hard-coded values so the unit under test can run.</div>
+        <div class="def-key">Drivers</div><div class="def-val">Test harnesses that simulate the caller, passing inputs and capturing outputs.</div>
+        <div class="def-key">Goal</div><div class="def-val">Verify logic, computation, boundary conditions, exception handling, and local data structures within the module.</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title"><span class="badge badge-teal">Integration Testing</span></div>
+        <p>Tests how modules work together. Combines verified units and checks data flow and interface contracts across module boundaries.</p>
+        <div class="def-row">
+          <div class="def-key">Big Bang</div><div class="def-val">All modules integrated at once — hard to isolate failures.</div>
+          <div class="def-key">Top-Down</div><div class="def-val">Start from top-level modules, stubs replace lower modules. Breadth-first or depth-first.</div>
+          <div class="def-key">Bottom-Up</div><div class="def-val">Start from lowest modules, drivers replace higher. Useful when low-level components are complex.</div>
+          <div class="def-key">Sandwich</div><div class="def-val">Combines top-down and bottom-up simultaneously to reduce time.</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="badge badge-amber">System Testing</span></div>
+        <p>Tests the complete, integrated system against the SRS. Covers both functional and non-functional requirements.</p>
+        <div class="def-row">
+          <div class="def-key">Functional</div><div class="def-val">Verify all specified features and use cases behave correctly end-to-end.</div>
+          <div class="def-key">Performance</div><div class="def-val">Load, stress, and scalability testing under realistic and peak conditions.</div>
+          <div class="def-key">Security</div><div class="def-val">Penetration testing, authentication, authorization, and data integrity checks.</div>
+          <div class="def-key">Usability</div><div class="def-val">UI and UX evaluation — learnability, efficiency, error recovery.</div>
+          <div class="def-key">Reliability</div><div class="def-val">Mean time between failure (MTBF) and mean time to repair (MTTR) testing.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title"><span class="badge badge-red">Regression Testing</span></div>
+        <p>After any modification (bug fix, new feature, refactoring), a selected subset of existing tests is re-executed to ensure no previously passing functionality has broken.</p>
+        <div class="def-row">
+          <div class="def-key">Why needed</div><div class="def-val">Changes in one module can unexpectedly break other modules due to dependencies.</div>
+          <div class="def-key">Test selection</div><div class="def-val">Retest all (safe but slow), test selection (risk-based), test prioritization (critical tests first).</div>
+          <div class="def-key">Automation</div><div class="def-val">Regression suites must be automated (CI/CD pipelines) to be practical in agile environments.</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="badge badge-green">Use Case Testing</span></div>
+        <p>Tests derived directly from use cases in the requirements. Each use case is executed scenario-by-scenario including alternate and exception flows.</p>
+        <div class="def-row">
+          <div class="def-key">Main flow</div><div class="def-val">The happy-path scenario where all preconditions are met and the goal is achieved.</div>
+          <div class="def-key">Alternate flows</div><div class="def-val">Valid variations of the main flow (e.g., choose a different payment method).</div>
+          <div class="def-key">Exception flows</div><div class="def-val">Error conditions — invalid input, system unavailability, timeout handling.</div>
+          <div class="def-key">Traceability</div><div class="def-val">Each test maps back to a specific use case, ensuring requirement coverage is measurable.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: ESTIMATION -->
+  <div class="section" id="sec-estimation">
+    <div class="h2">Project Estimation Techniques</div>
+
+    <div class="card">
+      <div class="card-title"><span class="badge badge-purple">COCOMO — Basic Model</span></div>
+      <p>COnstructive COst MOdel (Boehm, 1981). Estimates effort and duration from estimated source lines of code (KLOC = thousands of lines of code). Three project modes:</p>
+      <div class="formula-box">
+        <div class="formula-label">Effort (Person-Months)</div>
+        E = a × (KLOC)^b<br><br>
+        <div class="formula-label">Duration (Months)</div>
+        D = c × E^d<br><br>
+        <div class="formula-label">People Required</div>
+        P = E / D
+      </div>
+      <table>
+        <tr><th>Mode</th><th>Project Type</th><th>a</th><th>b</th><th>c</th><th>d</th></tr>
+        <tr><td>Organic</td><td>Small, simple, well-understood (≤50 KLOC)</td><td>2.4</td><td>1.05</td><td>2.5</td><td>0.38</td></tr>
+        <tr><td>Semi-detached</td><td>Medium complexity, mixed experience (50–300 KLOC)</td><td>3.0</td><td>1.12</td><td>2.5</td><td>0.35</td></tr>
+        <tr><td>Embedded</td><td>Complex, real-time, constrained (>300 KLOC)</td><td>3.6</td><td>1.20</td><td>2.5</td><td>0.32</td></tr>
+      </table>
+      <div class="highlight-box" style="margin-top:0.75rem;"><p>Example (Organic, 10 KLOC): E = 2.4 × (10)^1.05 = 2.4 × 11.22 ≈ 26.9 PM &nbsp;|&nbsp; D = 2.5 × (26.9)^0.38 ≈ 8.6 months &nbsp;|&nbsp; P ≈ 3.1 people</p></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="badge badge-blue">Intermediate COCOMO</span></div>
+      <p>Refines the Basic COCOMO by applying 15 Cost Driver Attributes (EAF — Effort Adjustment Factor) that reflect real-world project differences not captured by KLOC alone.</p>
+      <div class="formula-box">
+        <div class="formula-label">Intermediate COCOMO Formula</div>
+        E = a × (KLOC)^b × EAF<br><br>
+        <div class="formula-label">where EAF = product of all cost driver multipliers</div>
+        EAF = CD₁ × CD₂ × ... × CD₁₅
+      </div>
+      <table>
+        <tr><th>Category</th><th>Cost Drivers (examples)</th></tr>
+        <tr><td>Product Attributes</td><td>Required reliability, database size, product complexity</td></tr>
+        <tr><td>Hardware Attributes</td><td>Execution time constraint, main storage constraint, virtual machine volatility</td></tr>
+        <tr><td>Personnel Attributes</td><td>Analyst capability, programmer capability, virtual machine experience, language experience</td></tr>
+        <tr><td>Project Attributes</td><td>Use of software tools, modern programming practices, required schedule</td></tr>
+      </table>
+      <p style="margin-top:0.75rem;">Each cost driver is rated on a scale (Very Low → Extra High). Rating maps to a multiplier (e.g., Very Low = 1.40, Nominal = 1.00, Very High = 0.70 for analyst capability). EAF ranges typically from 0.9 to 1.4 in practice.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="badge badge-teal">Function Point Analysis (FPA)</span></div>
+      <p>Albrecht (1979). Measures software size in function points — based on functionality delivered to the user, independent of technology or programming language.</p>
+      <div class="formula-box">
+        <div class="formula-label">Step 1: Count Unadjusted Function Points (UFP)</div>
+        UFP = Σ (Count × Weight) for each of the 5 component types<br><br>
+        <div class="formula-label">Step 2: Apply Technical Complexity Factor (TCF)</div>
+        TCF = 0.65 + 0.01 × Σ(Fi) &nbsp;&nbsp; where Fi = 14 General System Characteristics rated 0–5<br><br>
+        <div class="formula-label">Step 3: Adjusted Function Points</div>
+        AFP = UFP × TCF
+      </div>
+      <table>
+        <tr><th>Component</th><th>Simple</th><th>Average</th><th>Complex</th></tr>
+        <tr><td>External Inputs (EI)</td><td>3</td><td>4</td><td>6</td></tr>
+        <tr><td>External Outputs (EO)</td><td>4</td><td>5</td><td>7</td></tr>
+        <tr><td>External Inquiries (EQ)</td><td>3</td><td>4</td><td>6</td></tr>
+        <tr><td>Internal Logical Files (ILF)</td><td>7</td><td>10</td><td>15</td></tr>
+        <tr><td>External Interface Files (EIF)</td><td>5</td><td>7</td><td>10</td></tr>
+      </table>
+      <p style="margin-top:0.75rem;">Convert AFP to effort using historical productivity data: Effort = AFP / Productivity Rate (FP per person-month, typically 4–12 FP/PM).</p>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title"><span class="badge badge-amber">Delphi Technique</span></div>
+        <p>Expert judgment-based estimation. A facilitator collects independent estimates from multiple experts anonymously, shares the aggregated results, and iterates until consensus is reached.</p>
+        <div class="def-row">
+          <div class="def-key">Step 1</div><div class="def-val">Coordinator presents problem and specifications to all experts independently.</div>
+          <div class="def-key">Step 2</div><div class="def-val">Each expert submits an anonymous estimate with rationale.</div>
+          <div class="def-key">Step 3</div><div class="def-val">Coordinator summarizes results and redistributes (anonymously) to all experts.</div>
+          <div class="def-key">Step 4</div><div class="def-val">Experts revise estimates considering others' reasoning. Repeat until convergence.</div>
+          <div class="def-key">Advantage</div><div class="def-val">Avoids groupthink; leverages diverse expertise; useful when historical data is scarce.</div>
+          <div class="def-key">Wideband Delphi</div><div class="def-val">Extended version used in software where group discussion is allowed between rounds.</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="badge badge-coral">PERT / CPM</span></div>
+        <p>Program Evaluation and Review Technique (PERT) and Critical Path Method (CPM) are network-based scheduling and estimation techniques.</p>
+        <div class="formula-box" style="border-left-color: #D85A30; font-size:12px;">
+          <div class="formula-label">PERT Three-Point Estimate</div>
+          tE = (O + 4M + P) / 6<br>
+          σ = (P − O) / 6<br>
+          Variance = σ²<br><br>
+          <div class="formula-label">where</div>
+          O = Optimistic &nbsp;|&nbsp; M = Most Likely &nbsp;|&nbsp; P = Pessimistic
+        </div>
+        <div class="def-row">
+          <div class="def-key">Critical Path</div><div class="def-val">Longest path through the activity network — determines minimum project duration.</div>
+          <div class="def-key">Float / Slack</div><div class="def-val">Time an activity can be delayed without delaying the project. Critical path has zero float.</div>
+          <div class="def-key">CPM vs PERT</div><div class="def-val">CPM uses single deterministic estimates; PERT uses probabilistic 3-point estimates for uncertainty.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: RISKS -->
+  <div class="section" id="sec-risks">
+    <div class="h2">Software Risks & Risk Management</div>
+
+    <div class="card">
+      <div class="card-title"><span class="badge badge-purple">What is Risk?</span></div>
+      <p>A risk is an uncertain event or condition that, if it occurs, has a negative effect on a project's objectives (scope, schedule, cost, quality). Risk = Probability × Impact.</p>
+      <div class="metric-row">
+        <div class="metric"><div class="metric-val">Project</div><div class="metric-lbl">Risks affecting schedule, resources, budget</div></div>
+        <div class="metric"><div class="metric-val">Product</div><div class="metric-lbl">Risks affecting quality or performance of deliverable</div></div>
+        <div class="metric"><div class="metric-val">Business</div><div class="metric-lbl">Risks affecting the organization or market</div></div>
+        <div class="metric"><div class="metric-val">Technical</div><div class="metric-lbl">Risks from technology choices or complexity</div></div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title"><span class="badge badge-red">Reactive Risk Management</span></div>
+        <div class="accent-item accent-red" style="margin-top:0.5rem;">
+          <div class="accent-title">Also called "fire-fighting" or crisis management</div>
+          <p>Team waits until a risk manifests as a problem before taking action.</p>
+        </div>
+        <div class="def-row" style="margin-top:0.75rem;">
+          <div class="def-key">Approach</div><div class="def-val">React to problems after they occur. No formal risk identification upfront.</div>
+          <div class="def-key">Risk Mitigation</div><div class="def-val">Also called "Indiana Jones approach" — manage crisis when it strikes.</div>
+          <div class="def-key">Contingency</div><div class="def-val">Buffers added at end. No systematic contingency plans per risk.</div>
+          <div class="def-key">Drawback</div><div class="def-val">Higher cost to fix, schedule overruns, panic-driven decisions, customer dissatisfaction.</div>
+          <div class="def-key">When used</div><div class="def-val">Small trivial projects, or teams with poor risk culture. Never recommended for critical systems.</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="badge badge-green">Proactive Risk Management</span></div>
+        <div class="accent-item accent-green" style="margin-top:0.5rem;">
+          <div class="accent-title">Systematic, anticipatory approach</div>
+          <p>Risks are identified, analyzed, and mitigation strategies are planned before problems occur.</p>
+        </div>
+        <div class="def-row" style="margin-top:0.75rem;">
+          <div class="def-key">Step 1: Identify</div><div class="def-val">Risk checklists, brainstorming, Delphi, decomposition, assumption analysis.</div>
+          <div class="def-key">Step 2: Analyze</div><div class="def-val">Qualitative (probability × impact matrix) and quantitative (Monte Carlo, EMV) analysis.</div>
+          <div class="def-key">Step 3: Plan</div><div class="def-val">Mitigation, avoidance, transference, or acceptance strategies per risk.</div>
+          <div class="def-key">Step 4: Monitor</div><div class="def-val">Track risk triggers and residual risks throughout the project lifecycle.</div>
+          <div class="def-key">Step 5: Communicate</div><div class="def-val">Risk register maintained and reviewed in every project review meeting.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="badge badge-amber">The Risk Management Process (Proactive)</span></div>
+      <table>
+        <tr><th>Phase</th><th>Activity</th><th>Output</th></tr>
+        <tr><td>Risk Identification</td><td>Checklists, interviews, historical data review, SWOT analysis</td><td>List of risks with descriptions</td></tr>
+        <tr><td>Risk Analysis</td><td>Probability × Impact matrix; qualitative scoring; quantitative EMV = P × Impact</td><td>Risk ranked priority list</td></tr>
+        <tr><td>Risk Planning</td><td>Mitigation (reduce P or I), Avoidance (change plan), Transfer (insurance/contract), Acceptance (contingency reserve)</td><td>Risk mitigation plan per risk</td></tr>
+        <tr><td>Risk Monitoring</td><td>Track risk triggers, audit mitigation actions, re-evaluate risks each sprint/phase</td><td>Updated risk register</td></tr>
+        <tr><td>Risk Communication</td><td>Include in status reports; escalate top risks to stakeholders; maintain shared risk register</td><td>Stakeholder awareness</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="badge badge-blue">Risk Exposure & Common Software Risks</span></div>
+      <div class="formula-box" style="border-left-color: #185FA5;">
+        <div class="formula-label">Risk Exposure (RE)</div>
+        RE = Probability of Loss × Size of Loss<br>
+        Priority = Probability × Impact (1–5 scale each → score 1–25)
+      </div>
+      <table>
+        <tr><th>Risk</th><th>Category</th><th>Typical Mitigation</th></tr>
+        <tr><td>Requirements creep</td><td>Project</td><td>Formal change control process, scope baseline</td></tr>
+        <tr><td>Key staff turnover</td><td>Project</td><td>Knowledge documentation, cross-training, retention plans</td></tr>
+        <tr><td>Technology immaturity</td><td>Technical</td><td>Prototyping, technology spikes, fallback to proven tech</td></tr>
+        <tr><td>Poor estimation</td><td>Project</td><td>Multiple estimation techniques, expert review, historical calibration</td></tr>
+        <tr><td>Security vulnerabilities</td><td>Product</td><td>Threat modeling early, SAST/DAST integration in CI</td></tr>
+        <tr><td>Integration failures</td><td>Technical</td><td>Early integration testing, API contracts, mocking</td></tr>
+        <tr><td>Vendor/3rd party delays</td><td>Business</td><td>Contractual SLAs, parallel procurement, fallback suppliers</td></tr>
+      </table>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title"><span class="badge badge-teal">Risk Mitigation Strategies</span></div>
+        <div class="def-row">
+          <div class="def-key">Avoidance</div><div class="def-val">Eliminate the risk entirely — change scope, technology, or approach so the risk no longer applies.</div>
+          <div class="def-key">Mitigation</div><div class="def-val">Reduce probability and/or impact — early testing, prototyping, better training, phased rollout.</div>
+          <div class="def-key">Transference</div><div class="def-val">Shift impact to a third party — insurance, fixed-price contracts, SLAs with penalties.</div>
+          <div class="def-key">Acceptance</div><div class="def-val">Acknowledge the risk and set aside contingency reserves (time/cost buffer) to deal with it if it occurs.</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="badge badge-purple">Risk Register</span></div>
+        <p>Central artifact for proactive risk management. Maintained throughout the project lifecycle and reviewed regularly.</p>
+        <div class="def-row">
+          <div class="def-key">Risk ID</div><div class="def-val">Unique identifier for tracking and reference.</div>
+          <div class="def-key">Description</div><div class="def-val">Clear statement of the risk event and its potential cause.</div>
+          <div class="def-key">Probability</div><div class="def-val">Likelihood rating (Low/Med/High or 0–1 numeric).</div>
+          <div class="def-key">Impact</div><div class="def-val">Consequence severity rating on cost, schedule, scope, or quality.</div>
+          <div class="def-key">Owner</div><div class="def-val">Team member responsible for monitoring and executing the mitigation plan.</div>
+          <div class="def-key">Status</div><div class="def-val">Open, Mitigated, Triggered, Closed.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>

@@ -1,0 +1,1187 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans,'Segoe UI',sans-serif);font-size:15px;color:var(--color-text-primary,#1a1a1a);line-height:1.7;background:transparent}
+.nav{display:flex;flex-wrap:wrap;gap:6px;padding:16px 0 20px;border-bottom:0.5px solid var(--color-border-tertiary,#e5e5e5);margin-bottom:24px}
+.nav-btn{font-size:12px;padding:5px 12px;border-radius:20px;border:0.5px solid var(--color-border-secondary,#d0d0d0);background:transparent;cursor:pointer;color:var(--color-text-secondary,#666);transition:all .15s}
+.nav-btn.active,.nav-btn:hover{background:var(--color-background-secondary,#f5f5f5);color:var(--color-text-primary,#1a1a1a)}
+.nav-btn.active{font-weight:500;border-color:var(--color-border-primary,#aaa)}
+.section{display:none;animation:fadeIn .2s}
+.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+h2{font-size:20px;font-weight:500;margin-bottom:16px;padding-bottom:8px;border-bottom:0.5px solid var(--color-border-tertiary,#e5e5e5)}
+h3{font-size:16px;font-weight:500;margin:20px 0 10px}
+h4{font-size:14px;font-weight:500;margin:14px 0 6px;color:var(--color-text-secondary,#555)}
+p{margin-bottom:10px}
+.card{background:var(--color-background-secondary,#f8f8f8);border:0.5px solid var(--color-border-tertiary,#e5e5e5);border-radius:10px;padding:14px 16px;margin-bottom:14px}
+.card.blue{border-left:3px solid #3B8BD4;background:rgba(59,139,212,.05)}
+.card.green{border-left:3px solid #1D9E75;background:rgba(29,158,117,.05)}
+.card.amber{border-left:3px solid #BA7517;background:rgba(186,117,23,.05)}
+.card.red{border-left:3px solid #D85A30;background:rgba(216,90,48,.05)}
+.card.purple{border-left:3px solid #7F77DD;background:rgba(127,119,221,.05)}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500;margin:2px}
+.tag.good{background:rgba(29,158,117,.12);color:#0F6E56}
+.tag.bad{background:rgba(216,90,48,.12);color:#993C1D}
+.tag.info{background:rgba(59,139,212,.12);color:#185FA5}
+.tag.warn{background:rgba(186,117,23,.12);color:#854F0B}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:14px}
+th{background:var(--color-background-secondary,#f5f5f5);font-weight:500;padding:8px 10px;text-align:left;border:0.5px solid var(--color-border-tertiary,#e5e5e5)}
+td{padding:7px 10px;border:0.5px solid var(--color-border-tertiary,#e5e5e5);vertical-align:top}
+tr:hover td{background:var(--color-background-secondary,#f8f8f8)}
+code{font-family:var(--font-mono,monospace);font-size:12.5px;background:var(--color-background-secondary,#f0f0f0);padding:1px 5px;border-radius:4px}
+pre{background:var(--color-background-secondary,#f5f5f5);border:0.5px solid var(--color-border-tertiary,#e5e5e5);border-radius:8px;padding:14px;font-size:12px;font-family:var(--font-mono,monospace);overflow-x:auto;margin:10px 0;line-height:1.6}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.level-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:500;padding:2px 8px;border-radius:10px;background:rgba(127,119,221,.12);color:#534AB7}
+svg.diag{width:100%;max-width:660px;display:block;margin:12px auto}
+.notation-row{display:flex;align-items:center;gap:12px;padding:6px 0;border-bottom:0.5px solid var(--color-border-tertiary,#e5e5e5);font-size:13px}
+.notation-row:last-child{border-bottom:none}
+.nt-shape{flex-shrink:0;width:80px}
+.nt-label{font-weight:500;min-width:120px}
+.nt-desc{color:var(--color-text-secondary,#666)}
+ul,ol{margin:0 0 10px 20px}
+li{margin-bottom:3px}
+.tip{background:rgba(59,139,212,.07);border:0.5px solid rgba(59,139,212,.25);border-radius:8px;padding:10px 14px;margin:10px 0;font-size:13px}
+.tip::before{content:"💡 ";font-style:normal}
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <button class="nav-btn active" onclick="show('cohesion')">Cohesion</button>
+  <button class="nav-btn" onclick="show('coupling')">Coupling</button>
+  <button class="nav-btn" onclick="show('dfd')">DFD</button>
+  <button class="nav-btn" onclick="show('refactor')">Refactoring</button>
+  <button class="nav-btn" onclick="show('ood')">OO Design</button>
+  <button class="nav-btn" onclick="show('fod')">Function-Oriented Design</button>
+  <button class="nav-btn" onclick="show('usecase')">Use Case Diagram</button>
+  <button class="nav-btn" onclick="show('class')">Class Diagram</button>
+  <button class="nav-btn" onclick="show('activity')">Activity Diagram</button>
+  <button class="nav-btn" onclick="show('sequence')">Sequence Diagram</button>
+</div>
+
+<!-- ========== COHESION ========== -->
+<div id="cohesion" class="section active">
+<h2>Cohesion</h2>
+<div class="card blue">
+<p><strong>Definition:</strong> Cohesion measures how strongly the elements <em>inside</em> a single module are related to each other. A highly cohesive module does one thing and does it completely.</p>
+<p>High cohesion → easier to understand, maintain, and reuse. Low cohesion → module is a "grab-bag" of unrelated functions.</p>
+</div>
+
+<h3>Types of Cohesion (worst → best)</h3>
+
+<table>
+<tr><th>#</th><th>Type</th><th>Description</th><th>Rating</th></tr>
+<tr><td>1</td><td>Coincidental</td><td>Elements grouped randomly with no logical relation</td><td><span class="tag bad">Very Low</span></td></tr>
+<tr><td>2</td><td>Logical</td><td>Elements perform similar operations selected by control flag (e.g., all I/O)</td><td><span class="tag bad">Low</span></td></tr>
+<tr><td>3</td><td>Temporal</td><td>Elements execute at the same time (e.g., system startup)</td><td><span class="tag warn">Low-Med</span></td></tr>
+<tr><td>4</td><td>Procedural</td><td>Elements follow a certain sequence of execution</td><td><span class="tag warn">Medium</span></td></tr>
+<tr><td>5</td><td>Communicational</td><td>Elements operate on the same data set</td><td><span class="tag info">Medium-High</span></td></tr>
+<tr><td>6</td><td>Sequential</td><td>Output of one element is input to next</td><td><span class="tag good">High</span></td></tr>
+<tr><td>7</td><td>Functional</td><td>Every element contributes to a single, well-defined task</td><td><span class="tag good">Very High ✓</span></td></tr>
+</table>
+
+<h3>Detailed Examples</h3>
+<div class="grid2">
+<div class="card red">
+<h4>1. Coincidental Cohesion (worst)</h4>
+<pre>// Completely unrelated functions dumped together
+module Utils {
+  printReport()
+  calculateTax()
+  sendEmail()
+  parseDate()
+}</pre>
+<p style="font-size:13px">No logical connection between functions.</p>
+</div>
+<div class="card amber">
+<h4>2. Logical Cohesion</h4>
+<pre>// All do "input", chosen by type flag
+module InputHandler {
+  handleInput(type) {
+    if (type == "keyboard") ...
+    if (type == "mouse") ...
+    if (type == "file") ...
+  }
+}</pre>
+<p style="font-size:13px">Related by category, but uses control flags.</p>
+</div>
+<div class="card amber">
+<h4>3. Temporal Cohesion</h4>
+<pre>// All happen at startup — not logically related
+module Startup {
+  initDB()
+  loadConfig()
+  startLogger()
+  openSocket()
+}</pre>
+<p style="font-size:13px">Related only by <em>when</em> they run.</p>
+</div>
+<div class="card amber">
+<h4>4. Procedural Cohesion</h4>
+<pre>// Sequence matters, but data not shared
+module FileOps {
+  openFile()
+  readPermissions()
+  closeFile()
+  logAccess()
+}</pre>
+<p style="font-size:13px">Ordered steps, but different data items.</p>
+</div>
+<div class="card blue">
+<h4>5. Communicational Cohesion</h4>
+<pre>// All work on same customer record
+module CustomerOps {
+  getCustomerName(id)
+  getCustomerEmail(id)
+  getCustomerAddress(id)
+}</pre>
+<p style="font-size:13px">Same data but different operations.</p>
+</div>
+<div class="card blue">
+<h4>6. Sequential Cohesion</h4>
+<pre>// Output of step feeds next step
+module DataPipeline {
+  rawData = readCSV()
+  cleaned = cleanData(rawData)
+  result = analyzeData(cleaned)
+  return result
+}</pre>
+<p style="font-size:13px">Each element's output is next one's input.</p>
+</div>
+</div>
+<div class="card green">
+<h4>7. Functional Cohesion (best)</h4>
+<pre>// Every line contributes to ONE task: compute invoice total
+function calculateInvoiceTotal(items, taxRate) {
+  subtotal = sum(items.price)
+  tax = subtotal * taxRate
+  return subtotal + tax
+}</pre>
+<p style="font-size:13px">Single, well-defined purpose. Every element is essential and related.</p>
+</div>
+
+<div class="tip">Aim for <strong>Functional</strong> or at least <strong>Sequential</strong> cohesion. Avoid Coincidental and Logical cohesion at all costs.</div>
+</div>
+
+<!-- ========== COUPLING ========== -->
+<div id="coupling" class="section">
+<h2>Coupling</h2>
+<div class="card blue">
+<p><strong>Definition:</strong> Coupling measures the degree of interdependence <em>between</em> modules. Low coupling means modules are largely independent and can be developed, tested, and modified separately.</p>
+<p>Low coupling → easier maintenance, better reuse, isolated failures. High coupling → ripple effect — changing one module breaks many others.</p>
+</div>
+
+<h3>Types of Coupling (worst → best)</h3>
+<table>
+<tr><th>#</th><th>Type</th><th>How Modules Interact</th><th>Rating</th></tr>
+<tr><td>1</td><td>Content</td><td>Module A directly modifies internals of Module B</td><td><span class="tag bad">Worst</span></td></tr>
+<tr><td>2</td><td>Common</td><td>Modules share global data</td><td><span class="tag bad">Very High</span></td></tr>
+<tr><td>3</td><td>External</td><td>Modules share externally imposed format/protocol</td><td><span class="tag bad">High</span></td></tr>
+<tr><td>4</td><td>Control</td><td>One module passes a control flag to dictate behavior of another</td><td><span class="tag warn">Medium-High</span></td></tr>
+<tr><td>5</td><td>Stamp (Data Structure)</td><td>Modules share composite data structure but use only part of it</td><td><span class="tag warn">Medium</span></td></tr>
+<tr><td>6</td><td>Data</td><td>Modules share only simple data via parameters</td><td><span class="tag good">Low ✓</span></td></tr>
+<tr><td>7</td><td>Message / No Coupling</td><td>Modules communicate via messages; completely independent</td><td><span class="tag good">Best</span></td></tr>
+</table>
+
+<h3>Detailed Examples</h3>
+<div class="grid2">
+<div class="card red">
+<h4>1. Content Coupling (worst)</h4>
+<pre>// Module A directly accesses Module B's internals
+moduleA {
+  moduleB.privateVar = 42  // ← direct access!
+  goto moduleB.label_5     // ← goto into another module!
+}</pre>
+</div>
+<div class="card red">
+<h4>2. Common Coupling</h4>
+<pre>// Both modules use a global variable
+int globalCounter = 0;
+
+moduleA() { globalCounter++; }
+moduleB() { globalCounter--; }
+// If counter goes wrong, who caused it?</pre>
+</div>
+<div class="card amber">
+<h4>3. Control Coupling</h4>
+<pre>// Flag controls behavior of called module
+moduleA() {
+  process(flag = "PRINT")   // ← control flag!
+}
+process(flag) {
+  if(flag == "PRINT") printData()
+  if(flag == "SAVE")  saveData()
+}</pre>
+</div>
+<div class="card amber">
+<h4>4. Stamp Coupling</h4>
+<pre>// Passing whole Employee object, using only name
+moduleA() {
+  emp = getEmployee()
+  printName(emp)  // ← passes whole record
+}
+printName(Employee emp) {
+  print(emp.name) // uses only .name
+}</pre>
+</div>
+</div>
+<div class="grid2">
+<div class="card green">
+<h4>5. Data Coupling (desirable)</h4>
+<pre>// Only needed data is passed as simple params
+calculateArea(length, width) {
+  return length * width
+}
+// Called as: calculateArea(5, 10)
+// No hidden dependencies, no global state</pre>
+</div>
+<div class="card green">
+<h4>6. Message Coupling (best)</h4>
+<pre>// Modules communicate via messages/events
+EventBus.publish("order.placed", {orderId: 42})
+
+// OrderModule subscribes independently
+EventBus.subscribe("order.placed", sendEmail)
+// Total independence — neither knows the other</pre>
+</div>
+</div>
+
+<h3>Cohesion vs Coupling Summary</h3>
+<div class="card">
+<table>
+<tr><th>Property</th><th>Direction</th><th>Within/Between</th><th>Goal</th></tr>
+<tr><td>Cohesion</td><td>↑ Higher = Better</td><td>Within a module</td><td>Maximize</td></tr>
+<tr><td>Coupling</td><td>↓ Lower = Better</td><td>Between modules</td><td>Minimize</td></tr>
+</table>
+<div class="tip">The golden rule: <strong>High Cohesion + Low Coupling</strong> = well-designed modular system.</div>
+</div>
+</div>
+
+<!-- ========== DFD ========== -->
+<div id="dfd" class="section">
+<h2>Data Flow Diagram (DFD)</h2>
+<div class="card blue">
+<p><strong>Definition:</strong> A graphical representation of how data flows through an information system. DFDs show inputs, outputs, data storage, and the processes that transform data — without showing control flow or decision logic.</p>
+</div>
+
+<h3>DFD Notations</h3>
+<div class="card">
+<svg class="diag" viewBox="0 0 660 200">
+  <defs><marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+  <!-- External Entity: Rectangle -->
+  <rect x="20" y="70" width="90" height="50" fill="rgba(59,139,212,.08)" stroke="#3B8BD4" stroke-width="1.5" rx="2"/>
+  <text x="65" y="92" text-anchor="middle" font-size="12" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Customer</text>
+  <text x="65" y="107" text-anchor="middle" font-size="10" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">(external entity)</text>
+  <text x="65" y="155" text-anchor="middle" font-size="11" fill="#3B8BD4" font-family="var(--font-sans,sans-serif)" font-weight="500">Rectangle</text>
+
+  <!-- Process: Circle/Ellipse -->
+  <ellipse cx="260" cy="95" rx="65" ry="35" fill="rgba(127,119,221,.08)" stroke="#7F77DD" stroke-width="1.5"/>
+  <text x="260" y="90" text-anchor="middle" font-size="12" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Process</text>
+  <text x="260" y="105" text-anchor="middle" font-size="10" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">Order</text>
+  <text x="260" y="155" text-anchor="middle" font-size="11" fill="#7F77DD" font-family="var(--font-sans,sans-serif)" font-weight="500">Circle / Ellipse</text>
+
+  <!-- Data Store: Open rectangle -->
+  <rect x="390" y="75" width="110" height="40" fill="rgba(29,158,117,.08)" stroke="#1D9E75" stroke-width="1.5"/>
+  <line x1="390" y1="75" x2="390" y2="115" stroke="#1D9E75" stroke-width="1.5"/>
+  <text x="450" y="92" text-anchor="middle" font-size="12" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">D1 Orders</text>
+  <text x="450" y="107" text-anchor="middle" font-size="10" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">(data store)</text>
+  <text x="450" y="155" text-anchor="middle" font-size="11" fill="#1D9E75" font-family="var(--font-sans,sans-serif)" font-weight="500">Open Rectangle</text>
+
+  <!-- Data Flow: Arrow -->
+  <line x1="550" y1="95" x2="630" y2="95" stroke="#BA7517" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <text x="590" y="85" text-anchor="middle" font-size="10" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">Order data</text>
+  <text x="590" y="155" text-anchor="middle" font-size="11" fill="#BA7517" font-family="var(--font-sans,sans-serif)" font-weight="500">Labeled Arrow</text>
+</svg>
+<div class="grid2" style="margin-top:8px">
+<div style="font-size:13px"><span style="color:#3B8BD4;font-weight:500">Rectangle</span> — External entity (person/system outside boundary)<br><span style="color:#7F77DD;font-weight:500">Circle/Ellipse</span> — Process (transforms data, has verb label)</div>
+<div style="font-size:13px"><span style="color:#1D9E75;font-weight:500">Open Rectangle</span> — Data Store (file, DB, register)<br><span style="color:#BA7517;font-weight:500">Labeled Arrow</span> — Data Flow (direction of data movement)</div>
+</div>
+</div>
+
+<h3>DFD Levels</h3>
+<div class="grid3">
+<div class="card purple"><span class="level-badge">Level 0</span><h4>Context Diagram</h4><p style="font-size:13px">Single process bubble representing entire system. Shows only external entities and data flows in/out. No internal detail.</p></div>
+<div class="card blue"><span class="level-badge">Level 1</span><h4>Level 1 DFD</h4><p style="font-size:13px">Breaks Level 0's single process into 4-7 major sub-processes. Data stores introduced. Major data flows shown.</p></div>
+<div class="card green"><span class="level-badge">Level 2</span><h4>Level 2 DFD</h4><p style="font-size:13px">Further decomposes each Level 1 process into detailed sub-processes. Most detailed representation.</p></div>
+</div>
+
+<h3>Example: Online Order System</h3>
+<h4>Level 0 — Context Diagram</h4>
+<svg class="diag" viewBox="0 0 660 200">
+  <defs><marker id="arr3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+  <!-- Customer -->
+  <rect x="20" y="75" width="90" height="50" fill="rgba(59,139,212,.1)" stroke="#3B8BD4" stroke-width="1.2" rx="2"/>
+  <text x="65" y="97" text-anchor="middle" font-size="12" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Customer</text>
+  <text x="65" y="112" text-anchor="middle" font-size="10" fill="var(--color-text-secondary,#555)" font-family="var(--font-sans,sans-serif)">External</text>
+  <!-- Main system -->
+  <ellipse cx="330" cy="100" rx="90" ry="50" fill="rgba(127,119,221,.1)" stroke="#7F77DD" stroke-width="1.5"/>
+  <text x="330" y="96" text-anchor="middle" font-size="13" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Order</text>
+  <text x="330" y="112" text-anchor="middle" font-size="13" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Management</text>
+  <!-- Supplier -->
+  <rect x="550" y="75" width="90" height="50" fill="rgba(29,158,117,.1)" stroke="#1D9E75" stroke-width="1.2" rx="2"/>
+  <text x="595" y="97" text-anchor="middle" font-size="12" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Supplier</text>
+  <text x="595" y="112" text-anchor="middle" font-size="10" fill="var(--color-text-secondary,#555)" font-family="var(--font-sans,sans-serif)">External</text>
+  <!-- Arrows -->
+  <line x1="110" y1="95" x2="238" y2="95" stroke="#3B8BD4" stroke-width="1.2" marker-end="url(#arr3)"/>
+  <text x="174" y="87" text-anchor="middle" font-size="10" fill="#3B8BD4" font-family="var(--font-sans,sans-serif)">Order request</text>
+  <line x1="238" y1="108" x2="110" y2="108" stroke="#3B8BD4" stroke-width="1.2" marker-end="url(#arr3)"/>
+  <text x="174" y="120" text-anchor="middle" font-size="10" fill="#3B8BD4" font-family="var(--font-sans,sans-serif)">Confirmation</text>
+  <line x1="422" y1="95" x2="548" y2="95" stroke="#1D9E75" stroke-width="1.2" marker-end="url(#arr3)"/>
+  <text x="485" y="87" text-anchor="middle" font-size="10" fill="#1D9E75" font-family="var(--font-sans,sans-serif)">Purchase order</text>
+  <line x1="548" y1="108" x2="422" y2="108" stroke="#1D9E75" stroke-width="1.2" marker-end="url(#arr3)"/>
+  <text x="485" y="120" text-anchor="middle" font-size="10" fill="#1D9E75" font-family="var(--font-sans,sans-serif)">Stock details</text>
+</svg>
+
+<h4>Level 1 — Expanded</h4>
+<svg class="diag" viewBox="0 0 660 310">
+  <defs><marker id="arr4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+  <!-- External: Customer -->
+  <rect x="10" y="120" width="80" height="44" fill="rgba(59,139,212,.1)" stroke="#3B8BD4" stroke-width="1" rx="2"/>
+  <text x="50" y="139" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Customer</text>
+  <text x="50" y="154" text-anchor="middle" font-size="9" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">External</text>
+  <!-- P1: Validate Order -->
+  <ellipse cx="200" cy="80" rx="72" ry="34" fill="rgba(127,119,221,.1)" stroke="#7F77DD" stroke-width="1.2"/>
+  <text x="200" y="76" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">1.0 Validate</text>
+  <text x="200" y="91" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Order</text>
+  <!-- P2: Process Payment -->
+  <ellipse cx="430" cy="80" rx="72" ry="34" fill="rgba(127,119,221,.1)" stroke="#7F77DD" stroke-width="1.2"/>
+  <text x="430" y="76" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">2.0 Process</text>
+  <text x="430" y="91" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Payment</text>
+  <!-- P3: Update Inventory -->
+  <ellipse cx="200" cy="220" rx="72" ry="34" fill="rgba(127,119,221,.1)" stroke="#7F77DD" stroke-width="1.2"/>
+  <text x="200" y="216" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">3.0 Update</text>
+  <text x="200" y="231" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Inventory</text>
+  <!-- P4: Dispatch Order -->
+  <ellipse cx="430" cy="220" rx="72" ry="34" fill="rgba(127,119,221,.1)" stroke="#7F77DD" stroke-width="1.2"/>
+  <text x="430" y="216" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">4.0 Dispatch</text>
+  <text x="430" y="231" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Order</text>
+  <!-- Data Store D1 -->
+  <rect x="570" y="113" width="78" height="34" fill="rgba(29,158,117,.08)" stroke="#1D9E75" stroke-width="1"/>
+  <line x1="570" y1="113" x2="570" y2="147" stroke="#1D9E75" stroke-width="1"/>
+  <text x="609" y="127" text-anchor="middle" font-size="10" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">D1 Orders</text>
+  <text x="609" y="141" text-anchor="middle" font-size="9" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">Store</text>
+  <!-- Data Store D2 -->
+  <rect x="570" y="205" width="78" height="34" fill="rgba(29,158,117,.08)" stroke="#1D9E75" stroke-width="1"/>
+  <line x1="570" y1="205" x2="570" y2="239" stroke="#1D9E75" stroke-width="1"/>
+  <text x="609" y="219" text-anchor="middle" font-size="10" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">D2 Stock</text>
+  <text x="609" y="233" text-anchor="middle" font-size="9" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">Store</text>
+  <!-- Arrows -->
+  <line x1="90" y1="135" x2="127" y2="100" stroke="#3B8BD4" stroke-width="1" marker-end="url(#arr4)"/>
+  <text x="100" y="112" font-size="9" fill="#3B8BD4" font-family="var(--font-sans,sans-serif)">Order data</text>
+  <line x1="272" y1="80" x2="356" y2="80" stroke="#7F77DD" stroke-width="1" marker-end="url(#arr4)"/>
+  <text x="314" y="73" text-anchor="middle" font-size="9" fill="#7F77DD" font-family="var(--font-sans,sans-serif)">Valid order</text>
+  <line x1="502" y1="80" x2="568" y2="130" stroke="#1D9E75" stroke-width="1" marker-end="url(#arr4)"/>
+  <text x="548" y="100" font-size="9" fill="#1D9E75" font-family="var(--font-sans,sans-serif)">Store</text>
+  <line x1="200" y1="114" x2="200" y2="185" stroke="#7F77DD" stroke-width="1" marker-end="url(#arr4)"/>
+  <text x="210" y="155" font-size="9" fill="#7F77DD" font-family="var(--font-sans,sans-serif)">Order confirmed</text>
+  <line x1="272" y1="220" x2="356" y2="220" stroke="#7F77DD" stroke-width="1" marker-end="url(#arr4)"/>
+  <text x="314" y="213" text-anchor="middle" font-size="9" fill="#7F77DD" font-family="var(--font-sans,sans-serif)">Stock OK</text>
+  <line x1="502" y1="220" x2="568" y2="220" stroke="#1D9E75" stroke-width="1" marker-end="url(#arr4)"/>
+  <text x="530" y="213" text-anchor="middle" font-size="9" fill="#1D9E75" font-family="var(--font-sans,sans-serif)">Update</text>
+  <text x="330" y="290" text-anchor="middle" font-size="11" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">Level 1 DFD — Online Order Management System</text>
+</svg>
+
+<h3>DFD Rules</h3>
+<ul style="font-size:13px">
+<li>Processes must have at least one input and one output</li>
+<li>Data stores must be connected to a process (never directly to external entities)</li>
+<li>External entities cannot connect directly to data stores</li>
+<li>Data flows must be labeled with the data being transferred</li>
+<li>No control flow — only data flow is shown</li>
+</ul>
+</div>
+
+<!-- ========== REFACTORING ========== -->
+<div id="refactor" class="section">
+<h2>Refactoring of Design</h2>
+<div class="card blue">
+<p><strong>Definition:</strong> Refactoring is the process of restructuring existing code/design without changing its external behavior. The goal is to improve internal structure — readability, maintainability, extensibility — while keeping functionality identical.</p>
+<p><em>"First make it work, then make it right."</em></p>
+</div>
+
+<h3>Why Refactor?</h3>
+<div class="grid2">
+<div class="card green">
+<h4>Benefits</h4>
+<ul style="font-size:13px">
+<li>Reduces technical debt</li>
+<li>Improves code readability</li>
+<li>Easier to add new features</li>
+<li>Reduces bug density</li>
+<li>Improves performance</li>
+<li>Easier unit testing</li>
+</ul>
+</div>
+<div class="card red">
+<h4>Code Smells (signals to refactor)</h4>
+<ul style="font-size:13px">
+<li>Long methods / god classes</li>
+<li>Duplicate code</li>
+<li>Magic numbers</li>
+<li>Deep nesting</li>
+<li>Poor variable names</li>
+<li>Tight coupling</li>
+</ul>
+</div>
+</div>
+
+<h3>Common Refactoring Techniques</h3>
+<div class="card">
+<h4>1. Extract Method</h4>
+<div class="grid2">
+<div>
+<p style="font-size:12px;font-weight:500;color:var(--color-text-secondary)">Before:</p>
+<pre>void printReport() {
+  // print header
+  System.out.println("=====");
+  System.out.println("Report");
+  System.out.println("=====");
+  // print body
+  for(item in items) print(item);
+}</pre>
+</div>
+<div>
+<p style="font-size:12px;font-weight:500;color:var(--color-text-secondary)">After:</p>
+<pre>void printReport() {
+  printHeader();
+  printBody();
+}
+void printHeader() {
+  System.out.println("=====");
+  System.out.println("Report");
+  System.out.println("=====");
+}</pre>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h4>2. Replace Magic Numbers with Constants</h4>
+<div class="grid2">
+<pre>// Before
+if (temp > 100) boil();</pre>
+<pre>// After
+final int BOILING_POINT = 100;
+if (temp > BOILING_POINT) boil();</pre>
+</div>
+</div>
+
+<div class="card">
+<h4>3. Extract Class (Split God Class)</h4>
+<div class="grid2">
+<pre>// Before: one huge class
+class Order {
+  calculateTotal()
+  sendEmail()
+  printInvoice()
+  validatePayment()
+  updateInventory()
+}</pre>
+<pre>// After: each class has one job
+class Order { calculateTotal() }
+class Notifier { sendEmail() }
+class Invoice { print() }
+class PaymentGateway { validate() }
+class InventoryManager { update() }</pre>
+</div>
+</div>
+
+<div class="card">
+<h4>4. Replace Conditional with Polymorphism</h4>
+<div class="grid2">
+<pre>// Before
+double getSpeed(Bird b) {
+  if (b.type == "EUROPEAN") return 35;
+  if (b.type == "AFRICAN") return 40;
+  if (b.type == "PARROT") return 60;
+}</pre>
+<pre>// After
+abstract class Bird { abstract speed(); }
+class EuropeanBird { speed() { return 35; }}
+class AfricanBird   { speed() { return 40; }}
+class Parrot        { speed() { return 60; }}</pre>
+</div>
+</div>
+
+<h3>Refactoring in Design (not just code)</h3>
+<div class="grid2">
+<div class="card amber">
+<h4>Design-Level Smells</h4>
+<ul style="font-size:13px">
+<li>Divergent change (many reasons to change one class)</li>
+<li>Shotgun surgery (one change affects many classes)</li>
+<li>Feature envy (method uses another class's data too much)</li>
+<li>Inappropriate intimacy (classes know too much about each other)</li>
+</ul>
+</div>
+<div class="card green">
+<h4>Design Refactoring Actions</h4>
+<ul style="font-size:13px">
+<li>Move method/field to more appropriate class</li>
+<li>Extract interface from class</li>
+<li>Replace inheritance with delegation</li>
+<li>Introduce design pattern (Strategy, Observer, Factory)</li>
+</ul>
+</div>
+</div>
+<div class="tip">Always run tests before and after refactoring. Refactoring without tests is risky — you may break behavior unknowingly.</div>
+</div>
+
+<!-- ========== OOD ========== -->
+<div id="ood" class="section">
+<h2>Object-Oriented Design (OOD)</h2>
+<div class="card blue">
+<p><strong>Definition:</strong> OOD is a design approach that models a system as a collection of interacting objects. Each object encapsulates data (attributes) and behavior (methods). Design uses principles like inheritance, polymorphism, and encapsulation.</p>
+</div>
+
+<h3>Core OOP Concepts</h3>
+<div class="grid2">
+<div class="card purple"><h4>Encapsulation</h4><p style="font-size:13px">Bundling data + methods. Hides internal state. Access via public interface only.</p><pre style="font-size:11px">class BankAccount {
+  private balance  // hidden
+  deposit(amt) { balance += amt }
+  getBalance() { return balance }
+}</pre></div>
+<div class="card blue"><h4>Inheritance</h4><p style="font-size:13px">A class acquires properties/methods of another. Promotes code reuse.</p><pre style="font-size:11px">class Animal { speak() }
+class Dog extends Animal {
+  speak() { return "Woof" }
+}</pre></div>
+<div class="card green"><h4>Polymorphism</h4><p style="font-size:13px">Same interface, different behavior. A Dog and Cat both speak() differently.</p><pre style="font-size:11px">Animal[] animals = [Dog, Cat, Bird]
+for (a in animals) a.speak() // different output</pre></div>
+<div class="card amber"><h4>Abstraction</h4><p style="font-size:13px">Exposing only essential features. Hiding complexity.</p><pre style="font-size:11px">abstract class Shape {
+  abstract area()  // contract
+}
+class Circle extends Shape {
+  area() { return π * r² }
+}</pre></div>
+</div>
+
+<h3>SOLID Principles</h3>
+<table>
+<tr><th>Letter</th><th>Principle</th><th>Meaning</th></tr>
+<tr><td><strong>S</strong></td><td>Single Responsibility</td><td>A class should have only one reason to change</td></tr>
+<tr><td><strong>O</strong></td><td>Open/Closed</td><td>Open for extension, closed for modification</td></tr>
+<tr><td><strong>L</strong></td><td>Liskov Substitution</td><td>Subtypes must be substitutable for their base types</td></tr>
+<tr><td><strong>I</strong></td><td>Interface Segregation</td><td>Many specific interfaces better than one general interface</td></tr>
+<tr><td><strong>D</strong></td><td>Dependency Inversion</td><td>Depend on abstractions, not concretions</td></tr>
+</table>
+
+<h3>OOD Process Steps</h3>
+<div class="card">
+<ol style="font-size:13px">
+<li><strong>Identify objects</strong> from requirements (nouns → classes)</li>
+<li><strong>Define attributes</strong> for each object</li>
+<li><strong>Define operations/methods</strong> (verbs → methods)</li>
+<li><strong>Identify relationships</strong> (association, aggregation, composition, inheritance)</li>
+<li><strong>Design interfaces</strong> between objects</li>
+<li><strong>Apply design patterns</strong> where applicable</li>
+<li><strong>Refine with UML diagrams</strong> (Class, Sequence, etc.)</li>
+</ol>
+</div>
+
+<h3>OOD vs Function-Oriented Design</h3>
+<table>
+<tr><th>Aspect</th><th>OOD</th><th>Function-Oriented</th></tr>
+<tr><td>Basic unit</td><td>Objects</td><td>Functions / procedures</td></tr>
+<tr><td>Data</td><td>Encapsulated in objects</td><td>Passed as parameters</td></tr>
+<tr><td>State</td><td>Distributed in objects</td><td>Shared / global</td></tr>
+<tr><td>Decomposition</td><td>By objects/classes</td><td>By functions/modules</td></tr>
+<tr><td>Reuse</td><td>Inheritance, composition</td><td>Libraries, includes</td></tr>
+<tr><td>Best for</td><td>Complex, evolving systems</td><td>Data transformation, scientific</td></tr>
+</table>
+</div>
+
+<!-- ========== FUNCTION-ORIENTED DESIGN ========== -->
+<div id="fod" class="section">
+<h2>Function-Oriented Design</h2>
+<div class="card blue">
+<p><strong>Definition:</strong> Also called <em>Structured Design</em> or <em>Procedural Design</em>. The system is decomposed into a set of functions/modules that operate on data. Each module performs a specific computation. Based on top-down decomposition and stepwise refinement.</p>
+</div>
+
+<h3>Key Concepts</h3>
+<div class="grid2">
+<div class="card">
+<h4>Top-Down Decomposition</h4>
+<p style="font-size:13px">Start with the overall problem. Repeatedly break it into smaller sub-problems until each is small enough to implement directly.</p>
+<pre>Main Program
+├── InputModule
+│   ├── ReadData()
+│   └── ValidateInput()
+├── ProcessModule
+│   ├── Calculate()
+│   └── ApplyRules()
+└── OutputModule
+    ├── FormatResult()
+    └── PrintReport()</pre>
+</div>
+<div class="card">
+<h4>Stepwise Refinement</h4>
+<p style="font-size:13px">Start with abstract description, progressively add detail.</p>
+<pre>// Level 1 (abstract)
+ProcessOrder()
+
+// Level 2 (refined)
+ProcessOrder() {
+  ValidateOrder()
+  CheckInventory()
+  ProcessPayment()
+  ShipOrder()
+}
+
+// Level 3 (detailed)
+ValidateOrder() {
+  CheckFields()
+  VerifyCustomer()
+}</pre>
+</div>
+</div>
+
+<h3>Structure Chart</h3>
+<p style="font-size:13px">A Structure Chart shows the hierarchical relationship between modules. It shows which modules call which, and what data is passed.</p>
+<svg class="diag" viewBox="0 0 660 280">
+  <defs><marker id="arr5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+  <!-- Root -->
+  <rect x="230" y="20" width="200" height="44" rx="8" fill="rgba(127,119,221,.12)" stroke="#7F77DD" stroke-width="1.2"/>
+  <text x="330" y="38" text-anchor="middle" font-size="12" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Main: Process Order</text>
+  <text x="330" y="54" text-anchor="middle" font-size="10" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">(root module)</text>
+  <!-- Level 1 -->
+  <rect x="30" y="130" width="140" height="44" rx="8" fill="rgba(59,139,212,.1)" stroke="#3B8BD4" stroke-width="1"/>
+  <text x="100" y="148" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Validate Order</text>
+  <text x="100" y="163" text-anchor="middle" font-size="9" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">(1.0)</text>
+
+  <rect x="258" y="130" width="140" height="44" rx="8" fill="rgba(59,139,212,.1)" stroke="#3B8BD4" stroke-width="1"/>
+  <text x="328" y="148" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Process Payment</text>
+  <text x="328" y="163" text-anchor="middle" font-size="9" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">(2.0)</text>
+
+  <rect x="490" y="130" width="140" height="44" rx="8" fill="rgba(59,139,212,.1)" stroke="#3B8BD4" stroke-width="1"/>
+  <text x="560" y="148" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Ship Order</text>
+  <text x="560" y="163" text-anchor="middle" font-size="9" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">(3.0)</text>
+
+  <!-- Level 2 under Validate -->
+  <rect x="20" y="240" width="110" height="34" rx="6" fill="rgba(29,158,117,.08)" stroke="#1D9E75" stroke-width="1"/>
+  <text x="75" y="257" text-anchor="middle" font-size="10" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Check Fields</text>
+  <text x="75" y="268" text-anchor="middle" font-size="9" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">(1.1)</text>
+
+  <rect x="148" y="240" width="110" height="34" rx="6" fill="rgba(29,158,117,.08)" stroke="#1D9E75" stroke-width="1"/>
+  <text x="203" y="257" text-anchor="middle" font-size="10" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Verify Customer</text>
+  <text x="203" y="268" text-anchor="middle" font-size="9" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">(1.2)</text>
+
+  <!-- Connectors -->
+  <line x1="290" y1="64" x2="158" y2="130" stroke="var(--color-text-secondary,#999)" stroke-width="1" marker-end="url(#arr5)"/>
+  <line x1="330" y1="64" x2="330" y2="130" stroke="var(--color-text-secondary,#999)" stroke-width="1" marker-end="url(#arr5)"/>
+  <line x1="370" y1="64" x2="502" y2="130" stroke="var(--color-text-secondary,#999)" stroke-width="1" marker-end="url(#arr5)"/>
+  <line x1="80" y1="174" x2="75" y2="240" stroke="var(--color-text-secondary,#999)" stroke-width="1" marker-end="url(#arr5)"/>
+  <line x1="120" y1="174" x2="200" y2="240" stroke="var(--color-text-secondary,#999)" stroke-width="1" marker-end="url(#arr5)"/>
+  <!-- Data labels on arrows -->
+  <text x="200" y="100" text-anchor="middle" font-size="9" fill="#BA7517" font-family="var(--font-sans,sans-serif)">order data</text>
+</svg>
+
+<h3>Comparing Notations</h3>
+<table>
+<tr><th>Notation</th><th>Purpose</th></tr>
+<tr><td>Structure Chart</td><td>Shows module hierarchy and inter-module calls</td></tr>
+<tr><td>DFD</td><td>Shows how data flows between processes</td></tr>
+<tr><td>Pseudocode</td><td>Shows algorithm logic within a module</td></tr>
+<tr><td>Flowchart</td><td>Shows control flow within a module</td></tr>
+</table>
+</div>
+
+<!-- ========== USE CASE ========== -->
+<div id="usecase" class="section">
+<h2>Use Case Diagram</h2>
+<div class="card blue">
+<p><strong>Definition:</strong> A Use Case Diagram shows the functional requirements of a system from the end-user's perspective. It captures <em>who</em> (actors) uses the system and <em>what</em> (use cases) they can do with it.</p>
+</div>
+
+<h3>Notations</h3>
+<div class="card">
+<svg class="diag" viewBox="0 0 660 180">
+  <!-- Actor -->
+  <circle cx="70" cy="60" r="14" fill="none" stroke="var(--color-text-primary,#333)" stroke-width="1.5"/>
+  <line x1="70" y1="74" x2="70" y2="110" stroke="var(--color-text-primary,#333)" stroke-width="1.5"/>
+  <line x1="50" y1="88" x2="90" y2="88" stroke="var(--color-text-primary,#333)" stroke-width="1.5"/>
+  <line x1="70" y1="110" x2="55" y2="130" stroke="var(--color-text-primary,#333)" stroke-width="1.5"/>
+  <line x1="70" y1="110" x2="85" y2="130" stroke="var(--color-text-primary,#333)" stroke-width="1.5"/>
+  <text x="70" y="155" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Customer</text>
+  <text x="70" y="170" text-anchor="middle" font-size="10" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">Actor (stick figure)</text>
+
+  <!-- Use Case -->
+  <ellipse cx="230" cy="90" rx="90" ry="35" fill="rgba(127,119,221,.1)" stroke="#7F77DD" stroke-width="1.5"/>
+  <text x="230" y="87" text-anchor="middle" font-size="12" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Place Order</text>
+  <text x="230" y="103" text-anchor="middle" font-size="10" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">Use Case (ellipse)</text>
+
+  <!-- System Boundary -->
+  <rect x="370" y="30" width="200" height="110" rx="8" fill="none" stroke="var(--color-border-secondary,#999)" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="470" y="22" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">«System Name»</text>
+  <text x="470" y="90" text-anchor="middle" font-size="11" fill="var(--color-text-secondary,#555)" font-family="var(--font-sans,sans-serif)">System Boundary</text>
+  <text x="470" y="110" text-anchor="middle" font-size="10" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">(dashed rectangle)</text>
+</svg>
+</div>
+
+<h3>Relationships</h3>
+<table>
+<tr><th>Relationship</th><th>Notation</th><th>Meaning</th></tr>
+<tr><td>Association</td><td>Solid line</td><td>Actor participates in use case</td></tr>
+<tr><td>Include</td><td>Dashed arrow «include»</td><td>Use case always calls another (mandatory sub-task)</td></tr>
+<tr><td>Extend</td><td>Dashed arrow «extend»</td><td>Use case conditionally extends another (optional behavior)</td></tr>
+<tr><td>Generalization</td><td>Solid arrow with hollow head</td><td>Actor/use case inherits from another</td></tr>
+</table>
+
+<h3>Example: Online Banking System</h3>
+<svg class="diag" viewBox="0 0 660 360">
+  <defs>
+    <marker id="arr6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+    <marker id="gen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="var(--color-text-secondary,#888)" stroke-width="1.5"/></marker>
+  </defs>
+  <!-- System boundary -->
+  <rect x="140" y="20" width="400" height="320" rx="10" fill="none" stroke="var(--color-border-secondary,#ccc)" stroke-width="1.5" stroke-dasharray="7,4"/>
+  <text x="340" y="14" text-anchor="middle" font-size="12" font-weight="500" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">Online Banking System</text>
+
+  <!-- Customer Actor -->
+  <circle cx="60" cy="100" r="14" fill="none" stroke="var(--color-text-primary,#333)" stroke-width="1.5"/>
+  <line x1="60" y1="114" x2="60" y2="148" stroke="var(--color-text-primary,#333)" stroke-width="1.5"/>
+  <line x1="40" y1="130" x2="80" y2="130" stroke="var(--color-text-primary,#333)" stroke-width="1.5"/>
+  <line x1="60" y1="148" x2="45" y2="168" stroke="var(--color-text-primary,#333)" stroke-width="1.5"/>
+  <line x1="60" y1="148" x2="75" y2="168" stroke="var(--color-text-primary,#333)" stroke-width="1.5"/>
+  <text x="60" y="186" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Customer</text>
+
+  <!-- Admin Actor -->
+  <circle cx="620" cy="160" r="14" fill="none" stroke="var(--color-text-primary,#333)" stroke-width="1.5"/>
+  <line x1="620" y1="174" x2="620" y2="208" stroke="var(--color-text-primary,#333)" stroke-width="1.5"/>
+  <line x1="600" y1="190" x2="640" y2="190" stroke="var(--color-text-primary,#333)" stroke-width="1.5"/>
+  <line x1="620" y1="208" x2="605" y2="228" stroke="var(--color-text-primary,#333)" stroke-width="1.5"/>
+  <line x1="620" y1="208" x2="635" y2="228" stroke="var(--color-text-primary,#333)" stroke-width="1.5"/>
+  <text x="620" y="246" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Admin</text>
+
+  <!-- Use Cases -->
+  <ellipse cx="310" cy="70" rx="85" ry="28" fill="rgba(127,119,221,.1)" stroke="#7F77DD" stroke-width="1.2"/>
+  <text x="310" y="74" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Login</text>
+
+  <ellipse cx="310" cy="150" rx="85" ry="28" fill="rgba(127,119,221,.1)" stroke="#7F77DD" stroke-width="1.2"/>
+  <text x="310" y="154" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Transfer Funds</text>
+
+  <ellipse cx="310" cy="230" rx="85" ry="28" fill="rgba(127,119,221,.1)" stroke="#7F77DD" stroke-width="1.2"/>
+  <text x="310" y="234" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">View Statement</text>
+
+  <ellipse cx="480" cy="70" rx="80" ry="28" fill="rgba(59,139,212,.1)" stroke="#3B8BD4" stroke-width="1.2"/>
+  <text x="480" y="67" text-anchor="middle" font-size="10" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Authenticate</text>
+  <text x="480" y="81" text-anchor="middle" font-size="9" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">(2FA)</text>
+
+  <ellipse cx="480" cy="150" rx="80" ry="28" fill="rgba(59,139,212,.1)" stroke="#3B8BD4" stroke-width="1.2"/>
+  <text x="480" y="147" text-anchor="middle" font-size="10" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Send OTP</text>
+  <text x="480" y="161" text-anchor="middle" font-size="9" fill="var(--color-text-secondary,#555)" font-family="var(--font-sans,sans-serif)">(extend)</text>
+
+  <ellipse cx="310" cy="310" rx="85" ry="28" fill="rgba(186,117,23,.08)" stroke="#BA7517" stroke-width="1.2"/>
+  <text x="310" y="314" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Manage Accounts</text>
+
+  <!-- Association lines -->
+  <line x1="74" y1="100" x2="225" y2="80" stroke="var(--color-text-secondary,#888)" stroke-width="1"/>
+  <line x1="74" y1="118" x2="225" y2="148" stroke="var(--color-text-secondary,#888)" stroke-width="1"/>
+  <line x1="74" y1="128" x2="225" y2="228" stroke="var(--color-text-secondary,#888)" stroke-width="1"/>
+  <line x1="540" y1="160" x2="608" y2="160" stroke="var(--color-text-secondary,#888)" stroke-width="1"/>
+
+  <!-- Include: Login → Authenticate -->
+  <line x1="395" y1="70" x2="400" y2="70" stroke="#3B8BD4" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr6)"/>
+  <text x="420" y="63" text-anchor="middle" font-size="9" fill="#3B8BD4" font-family="var(--font-sans,sans-serif)">«include»</text>
+
+  <!-- Extend: Transfer → Send OTP -->
+  <line x1="395" y1="150" x2="400" y2="150" stroke="#D85A30" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr6)"/>
+  <text x="418" y="143" text-anchor="middle" font-size="9" fill="#D85A30" font-family="var(--font-sans,sans-serif)">«extend»</text>
+</svg>
+
+<div class="card" style="margin-top:8px">
+<p style="font-size:13px"><strong>«include»</strong> — Login always includes Authenticate 2FA (mandatory)<br>
+<strong>«extend»</strong> — Transfer Funds may optionally extend to Send OTP (conditional on high amount)<br>
+<strong>Association</strong> — Customer can Login, Transfer, View Statement; Admin can Manage Accounts</p>
+</div>
+</div>
+
+<!-- ========== CLASS DIAGRAM ========== -->
+<div id="class" class="section">
+<h2>Class Diagram</h2>
+<div class="card blue">
+<p><strong>Definition:</strong> A Class Diagram shows the static structure of a system — the classes, their attributes, methods, and the relationships between them. It is the most widely used UML diagram.</p>
+</div>
+
+<h3>Class Notation</h3>
+<div class="card">
+<svg class="diag" viewBox="0 0 660 180">
+  <rect x="200" y="20" width="260" height="150" rx="8" fill="rgba(127,119,221,.06)" stroke="#7F77DD" stroke-width="1.5"/>
+  <rect x="200" y="20" width="260" height="34" rx="8" fill="rgba(127,119,221,.18)" stroke="#7F77DD" stroke-width="1.5"/>
+  <!-- clip top rounded corners for dividers -->
+  <rect x="200" y="40" width="260" height="14" fill="rgba(127,119,221,.18)"/>
+  <text x="330" y="43" text-anchor="middle" font-size="14" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">ClassName</text>
+  <line x1="200" y1="54" x2="460" y2="54" stroke="#7F77DD" stroke-width="1"/>
+  <text x="215" y="72" font-size="12" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">- attribute1 : Type</text>
+  <text x="215" y="88" font-size="12" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)"># attribute2 : Type</text>
+  <text x="215" y="104" font-size="12" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">+ attribute3 : Type</text>
+  <line x1="200" y1="114" x2="460" y2="114" stroke="#7F77DD" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="215" y="132" font-size="12" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">+ method1() : ReturnType</text>
+  <text x="215" y="150" font-size="12" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">- method2(param) : void</text>
+  <!-- Labels -->
+  <text x="100" y="43" text-anchor="middle" font-size="11" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">Class Name</text>
+  <text x="100" y="84" text-anchor="middle" font-size="11" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">Attributes</text>
+  <text x="100" y="140" text-anchor="middle" font-size="11" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">Methods</text>
+  <line x1="136" y1="43" x2="198" y2="43" stroke="var(--color-border-tertiary,#ccc)" stroke-width="0.5" stroke-dasharray="3,2"/>
+  <line x1="136" y1="84" x2="198" y2="84" stroke="var(--color-border-tertiary,#ccc)" stroke-width="0.5" stroke-dasharray="3,2"/>
+  <line x1="136" y1="140" x2="198" y2="140" stroke="var(--color-border-tertiary,#ccc)" stroke-width="0.5" stroke-dasharray="3,2"/>
+</svg>
+<p style="font-size:13px"><strong>Visibility:</strong> <code>+</code> public &nbsp; <code>-</code> private &nbsp; <code>#</code> protected &nbsp; <code>~</code> package</p>
+</div>
+
+<h3>Relationships</h3>
+<table>
+<tr><th>Relationship</th><th>Notation</th><th>Meaning</th><th>Example</th></tr>
+<tr><td>Association</td><td>Solid line</td><td>One class uses another</td><td>Student uses Library</td></tr>
+<tr><td>Aggregation</td><td>Solid line + hollow diamond</td><td>Has-a (weak ownership)</td><td>Department has Employees</td></tr>
+<tr><td>Composition</td><td>Solid line + filled diamond</td><td>Has-a (strong ownership, lifecycle)</td><td>Order has OrderItems</td></tr>
+<tr><td>Inheritance</td><td>Solid line + hollow triangle</td><td>Is-a relationship</td><td>Dog is-a Animal</td></tr>
+<tr><td>Realization</td><td>Dashed line + hollow triangle</td><td>Implements interface</td><td>Dog implements Speakable</td></tr>
+<tr><td>Dependency</td><td>Dashed arrow</td><td>One class depends on another</td><td>ReportGenerator uses Formatter</td></tr>
+</table>
+
+<h3>Example: E-Commerce Class Diagram</h3>
+<svg class="diag" viewBox="0 0 660 380">
+  <defs>
+    <marker id="inh" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M1 1L10 6L1 11Z" fill="none" stroke="#7F77DD" stroke-width="1.5"/></marker>
+    <marker id="comp" viewBox="0 0 14 10" refX="0" refY="5" markerWidth="12" markerHeight="10" orient="auto"><path d="M7 1L13 5L7 9L1 5Z" fill="#7F77DD"/></marker>
+    <marker id="agg" viewBox="0 0 14 10" refX="0" refY="5" markerWidth="12" markerHeight="10" orient="auto"><path d="M7 1L13 5L7 9L1 5Z" fill="none" stroke="#3B8BD4" stroke-width="1.5"/></marker>
+    <marker id="dep" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#BA7517" stroke-width="1.5"/></marker>
+  </defs>
+
+  <!-- Customer class -->
+  <rect x="10" y="10" width="160" height="100" rx="6" fill="rgba(59,139,212,.07)" stroke="#3B8BD4" stroke-width="1.2"/>
+  <rect x="10" y="10" width="160" height="28" rx="6" fill="rgba(59,139,212,.18)" stroke="#3B8BD4" stroke-width="1.2"/>
+  <rect x="10" y="28" width="160" height="10" fill="rgba(59,139,212,.18)"/>
+  <text x="90" y="29" text-anchor="middle" font-size="12" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Customer</text>
+  <line x1="10" y1="38" x2="170" y2="38" stroke="#3B8BD4" stroke-width="0.8"/>
+  <text x="18" y="53" font-size="10" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">- customerId: int</text>
+  <text x="18" y="66" font-size="10" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">- name: String</text>
+  <text x="18" y="79" font-size="10" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">- email: String</text>
+  <line x1="10" y1="85" x2="170" y2="85" stroke="#3B8BD4" stroke-width="0.5" stroke-dasharray="3,2"/>
+  <text x="18" y="98" font-size="10" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">+ placeOrder(): Order</text>
+
+  <!-- Order class -->
+  <rect x="240" y="10" width="175" height="115" rx="6" fill="rgba(127,119,221,.07)" stroke="#7F77DD" stroke-width="1.2"/>
+  <rect x="240" y="10" width="175" height="28" rx="6" fill="rgba(127,119,221,.18)" stroke="#7F77DD" stroke-width="1.2"/>
+  <rect x="240" y="28" width="175" height="10" fill="rgba(127,119,221,.18)"/>
+  <text x="327" y="29" text-anchor="middle" font-size="12" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Order</text>
+  <line x1="240" y1="38" x2="415" y2="38" stroke="#7F77DD" stroke-width="0.8"/>
+  <text x="248" y="53" font-size="10" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">- orderId: int</text>
+  <text x="248" y="66" font-size="10" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">- orderDate: Date</text>
+  <text x="248" y="79" font-size="10" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">- status: String</text>
+  <line x1="240" y1="85" x2="415" y2="85" stroke="#7F77DD" stroke-width="0.5" stroke-dasharray="3,2"/>
+  <text x="248" y="100" font-size="10" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">+ getTotal(): float</text>
+  <text x="248" y="113" font-size="10" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">+ cancel(): void</text>
+
+  <!-- OrderItem -->
+  <rect x="240" y="200" width="175" height="100" rx="6" fill="rgba(186,117,23,.07)" stroke="#BA7517" stroke-width="1.2"/>
+  <rect x="240" y="200" width="175" height="28" rx="6" fill="rgba(186,117,23,.18)" stroke="#BA7517" stroke-width="1.2"/>
+  <rect x="240" y="218" width="175" height="10" fill="rgba(186,117,23,.18)"/>
+  <text x="327" y="219" text-anchor="middle" font-size="12" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">OrderItem</text>
+  <line x1="240" y1="228" x2="415" y2="228" stroke="#BA7517" stroke-width="0.8"/>
+  <text x="248" y="244" font-size="10" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">- quantity: int</text>
+  <text x="248" y="257" font-size="10" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">- unitPrice: float</text>
+  <line x1="240" y1="265" x2="415" y2="265" stroke="#BA7517" stroke-width="0.5" stroke-dasharray="3,2"/>
+  <text x="248" y="281" font-size="10" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">+ getSubtotal(): float</text>
+  <text x="248" y="294" font-size="10" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">+ discount(): void</text>
+
+  <!-- Product -->
+  <rect x="480" y="150" width="165" height="100" rx="6" fill="rgba(29,158,117,.07)" stroke="#1D9E75" stroke-width="1.2"/>
+  <rect x="480" y="150" width="165" height="28" rx="6" fill="rgba(29,158,117,.18)" stroke="#1D9E75" stroke-width="1.2"/>
+  <rect x="480" y="168" width="165" height="10" fill="rgba(29,158,117,.18)"/>
+  <text x="562" y="169" text-anchor="middle" font-size="12" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Product</text>
+  <line x1="480" y1="178" x2="645" y2="178" stroke="#1D9E75" stroke-width="0.8"/>
+  <text x="488" y="193" font-size="10" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">- productId: int</text>
+  <text x="488" y="206" font-size="10" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">- name: String</text>
+  <text x="488" y="219" font-size="10" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">- price: float</text>
+  <line x1="480" y1="225" x2="645" y2="225" stroke="#1D9E75" stroke-width="0.5" stroke-dasharray="3,2"/>
+  <text x="488" y="241" font-size="10" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">+ getDetails(): String</text>
+
+  <!-- Payment abstract -->
+  <rect x="480" y="10" width="165" height="115" rx="6" fill="rgba(216,90,48,.06)" stroke="#D85A30" stroke-width="1.2"/>
+  <rect x="480" y="10" width="165" height="28" rx="6" fill="rgba(216,90,48,.15)" stroke="#D85A30" stroke-width="1.2"/>
+  <rect x="480" y="28" width="165" height="10" fill="rgba(216,90,48,.15)"/>
+  <text x="562" y="25" text-anchor="middle" font-size="10" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)" font-style="italic">«abstract»</text>
+  <text x="562" y="35" text-anchor="middle" font-size="12" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Payment</text>
+  <line x1="480" y1="38" x2="645" y2="38" stroke="#D85A30" stroke-width="0.8"/>
+  <text x="488" y="53" font-size="10" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">- amount: float</text>
+  <text x="488" y="66" font-size="10" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">- date: Date</text>
+  <line x1="480" y1="73" x2="645" y2="73" stroke="#D85A30" stroke-width="0.5" stroke-dasharray="3,2"/>
+  <text x="488" y="88" font-size="10" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">+ process(): boolean</text>
+  <text x="488" y="101" font-size="10" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">+ refund(): void</text>
+
+  <!-- Relationships -->
+  <!-- Customer -- Order (association) 1 to many -->
+  <line x1="170" y1="60" x2="240" y2="60" stroke="#888" stroke-width="1"/>
+  <text x="182" y="54" font-size="9" fill="#888" font-family="var(--font-sans,sans-serif)">1</text>
+  <text x="224" y="54" font-size="9" fill="#888" font-family="var(--font-sans,sans-serif)">0..*</text>
+  <text x="200" y="46" text-anchor="middle" font-size="9" fill="#888" font-family="var(--font-sans,sans-serif)">places</text>
+
+  <!-- Order ◆→ OrderItem (composition) -->
+  <line x1="327" y1="125" x2="327" y2="200" stroke="#7F77DD" stroke-width="1.2" marker-start="url(#comp)"/>
+  <text x="340" y="158" font-size="9" fill="#7F77DD" font-family="var(--font-sans,sans-serif)">1</text>
+  <text x="340" y="196" font-size="9" fill="#7F77DD" font-family="var(--font-sans,sans-serif)">1..*</text>
+
+  <!-- OrderItem -- Product (aggregation) -->
+  <line x1="415" y1="247" x2="480" y2="210" stroke="#3B8BD4" stroke-width="1" marker-end="url(#agg)"/>
+  <text x="454" y="220" font-size="9" fill="#3B8BD4" font-family="var(--font-sans,sans-serif)">1</text>
+
+  <!-- Order -- Payment (dependency) -->
+  <line x1="415" y1="60" x2="478" y2="60" stroke="#BA7517" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#dep)"/>
+  <text x="445" y="53" text-anchor="middle" font-size="9" fill="#BA7517" font-family="var(--font-sans,sans-serif)">«uses»</text>
+
+  <!-- Legend -->
+  <text x="10" y="340" font-size="10" fill="var(--color-text-secondary,#888)" font-family="var(--font-sans,sans-serif)">◆ Composition (strong has-a) &nbsp;◇ Aggregation (weak has-a) &nbsp;--- «uses» Dependency</text>
+</svg>
+</div>
+
+<!-- ========== ACTIVITY DIAGRAM ========== -->
+<div id="activity" class="section">
+<h2>Activity Diagram</h2>
+<div class="card blue">
+<p><strong>Definition:</strong> An Activity Diagram shows the flow of control or object flow with emphasis on the sequence and conditions of a workflow. It's like a detailed flowchart showing parallel activities, decision points, and merges.</p>
+</div>
+
+<h3>Notations</h3>
+<div class="card">
+<svg class="diag" viewBox="0 0 660 140">
+  <!-- Initial -->
+  <circle cx="70" cy="60" r="14" fill="var(--color-text-primary,#333)"/>
+  <text x="70" y="100" text-anchor="middle" font-size="10" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">Initial node</text>
+  <text x="70" y="113" text-anchor="middle" font-size="10" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">(filled circle)</text>
+  <!-- Activity -->
+  <rect x="155" y="40" width="120" height="40" rx="20" fill="rgba(127,119,221,.1)" stroke="#7F77DD" stroke-width="1.5"/>
+  <text x="215" y="65" text-anchor="middle" font-size="12" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Activity</text>
+  <text x="215" y="100" text-anchor="middle" font-size="10" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">Rounded rectangle</text>
+  <!-- Decision -->
+  <polygon points="370,40 400,60 370,80 340,60" fill="rgba(186,117,23,.1)" stroke="#BA7517" stroke-width="1.5"/>
+  <text x="370" y="64" text-anchor="middle" font-size="11" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">?</text>
+  <text x="370" y="100" text-anchor="middle" font-size="10" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">Decision/Merge (diamond)</text>
+  <!-- Synchronization -->
+  <rect x="480" y="50" width="6" height="40" rx="2" fill="var(--color-text-primary,#333)"/>
+  <text x="500" y="65" font-size="10" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">Fork/Join</text>
+  <text x="500" y="78" font-size="10" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">(thick bar)</text>
+  <!-- Final -->
+  <circle cx="610" cy="60" r="14" fill="none" stroke="var(--color-text-primary,#333)" stroke-width="2"/>
+  <circle cx="610" cy="60" r="9" fill="var(--color-text-primary,#333)"/>
+  <text x="610" y="100" text-anchor="middle" font-size="10" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">Final node</text>
+  <text x="610" y="113" text-anchor="middle" font-size="10" fill="var(--color-text-secondary,#666)" font-family="var(--font-sans,sans-serif)">(bull's-eye)</text>
+</svg>
+</div>
+
+<h3>Example: Online Order Processing</h3>
+<svg class="diag" viewBox="0 0 660 580">
+  <defs><marker id="arr7" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+  <!-- Initial -->
+  <circle cx="330" cy="30" r="12" fill="var(--color-text-primary,#333)"/>
+
+  <!-- Place Order -->
+  <rect x="220" y="58" width="220" height="38" rx="19" fill="rgba(127,119,221,.1)" stroke="#7F77DD" stroke-width="1.2"/>
+  <text x="330" y="81" text-anchor="middle" font-size="12" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Place Order</text>
+
+  <!-- Decision: Stock? -->
+  <polygon points="330,118 366,148 330,178 294,148" fill="rgba(186,117,23,.08)" stroke="#BA7517" stroke-width="1.2"/>
+  <text x="330" y="145" text-anchor="middle" font-size="10" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">In</text>
+  <text x="330" y="158" text-anchor="middle" font-size="10" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Stock?</text>
+
+  <!-- Yes → Fork -->
+  <rect x="326" y="196" width="8" height="40" fill="var(--color-text-primary,#333)"/>
+
+  <!-- Parallel: Process Payment + Prepare Shipment -->
+  <rect x="130" y="255" width="180" height="38" rx="19" fill="rgba(59,139,212,.1)" stroke="#3B8BD4" stroke-width="1.2"/>
+  <text x="220" y="278" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Process Payment</text>
+
+  <rect x="350" y="255" width="180" height="38" rx="19" fill="rgba(29,158,117,.1)" stroke="#1D9E75" stroke-width="1.2"/>
+  <text x="440" y="278" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Prepare Shipment</text>
+
+  <!-- Join bar -->
+  <rect x="190" y="314" width="280" height="8" fill="var(--color-text-primary,#333)"/>
+
+  <!-- Dispatch -->
+  <rect x="220" y="342" width="220" height="38" rx="19" fill="rgba(127,119,221,.1)" stroke="#7F77DD" stroke-width="1.2"/>
+  <text x="330" y="365" text-anchor="middle" font-size="12" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Dispatch Order</text>
+
+  <!-- Send Confirmation -->
+  <rect x="220" y="400" width="220" height="38" rx="19" fill="rgba(127,119,221,.1)" stroke="#7F77DD" stroke-width="1.2"/>
+  <text x="330" y="423" text-anchor="middle" font-size="12" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Send Confirmation</text>
+
+  <!-- Final -->
+  <circle cx="330" cy="462" r="12" fill="none" stroke="var(--color-text-primary,#333)" stroke-width="2"/>
+  <circle cx="330" cy="462" r="7" fill="var(--color-text-primary,#333)"/>
+
+  <!-- No path: Notify Out of Stock -->
+  <rect x="480" y="138" width="160" height="38" rx="19" fill="rgba(216,90,48,.08)" stroke="#D85A30" stroke-width="1.2"/>
+  <text x="560" y="161" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">Notify Out of Stock</text>
+
+  <!-- Final for No path -->
+  <circle cx="560" cy="215" r="12" fill="none" stroke="var(--color-text-primary,#333)" stroke-width="2"/>
+  <circle cx="560" cy="215" r="7" fill="var(--color-text-primary,#333)"/>
+
+  <!-- Arrows -->
+  <line x1="330" y1="42" x2="330" y2="58" stroke="#888" stroke-width="1" marker-end="url(#arr7)"/>
+  <line x1="330" y1="96" x2="330" y2="118" stroke="#888" stroke-width="1" marker-end="url(#arr7)"/>
+
+  <!-- Yes path down -->
+  <line x1="330" y1="178" x2="330" y2="196" stroke="#888" stroke-width="1" marker-end="url(#arr7)"/>
+  <text x="338" y="192" font-size="10" fill="#1D9E75" font-family="var(--font-sans,sans-serif)">Yes</text>
+
+  <!-- Fork to parallel -->
+  <line x1="330" y1="236" x2="220" y2="255" stroke="#888" stroke-width="1" marker-end="url(#arr7)"/>
+  <line x1="330" y1="236" x2="440" y2="255" stroke="#888" stroke-width="1" marker-end="url(#arr7)"/>
+
+  <!-- Join -->
+  <line x1="220" y1="293" x2="220" y2="314" stroke="#888" stroke-width="1"/>
+  <line x1="440" y1="293" x2="440" y2="314" stroke="#888" stroke-width="1"/>
+  <line x1="330" y1="322" x2="330" y2="342" stroke="#888" stroke-width="1" marker-end="url(#arr7)"/>
+
+  <line x1="330" y1="380" x2="330" y2="400" stroke="#888" stroke-width="1" marker-end="url(#arr7)"/>
+  <line x1="330" y1="438" x2="330" y2="450" stroke="#888" stroke-width="1" marker-end="url(#arr7)"/>
+
+  <!-- No path -->
+  <line x1="366" y1="148" x2="480" y2="148" stroke="#D85A30" stroke-width="1" marker-end="url(#arr7)"/>
+  <text x="420" y="142" text-anchor="middle" font-size="10" fill="#D85A30" font-family="var(--font-sans,sans-serif)">No</text>
+  <line x1="560" y1="176" x2="560" y2="203" stroke="#888" stroke-width="1" marker-end="url(#arr7)"/>
+
+  <!-- Swimlane label hint -->
+  <text x="330" y="545" text-anchor="middle" font-size="11" fill="var(--color-text-secondary,#888)" font-family="var(--font-sans,sans-serif)">Activity Diagram — Online Order Processing (with fork/join for parallel activities)</text>
+</svg>
+</div>
+
+<!-- ========== SEQUENCE DIAGRAM ========== -->
+<div id="sequence" class="section">
+<h2>Sequence Diagram</h2>
+<div class="card blue">
+<p><strong>Definition:</strong> A Sequence Diagram shows how objects interact in a time sequence. It emphasizes the order of messages exchanged between lifelines (objects/actors) to accomplish a use case or scenario.</p>
+</div>
+
+<h3>Notations</h3>
+<table>
+<tr><th>Element</th><th>Notation</th><th>Meaning</th></tr>
+<tr><td>Lifeline</td><td>Box at top + dashed vertical line</td><td>An object or actor participating in interaction</td></tr>
+<tr><td>Activation Bar</td><td>Thin rectangle on lifeline</td><td>Period during which object is active/executing</td></tr>
+<tr><td>Synchronous Message</td><td>Solid arrow →</td><td>Caller waits for response (method call)</td></tr>
+<tr><td>Return Message</td><td>Dashed arrow ← - -</td><td>Return value from a method</td></tr>
+<tr><td>Asynchronous Message</td><td>Open-headed arrow →</td><td>Caller doesn't wait (fire & forget)</td></tr>
+<tr><td>Self Call</td><td>Arrow looping back to same lifeline</td><td>Object calling its own method</td></tr>
+<tr><td>opt frame</td><td>Box labeled «opt» with condition</td><td>Optional interaction</td></tr>
+<tr><td>loop frame</td><td>Box labeled «loop»</td><td>Repeated interaction</td></tr>
+<tr><td>alt frame</td><td>Box labeled «alt» with dashed divider</td><td>Alternative paths (if-else)</td></tr>
+</table>
+
+<h3>Example: User Login Sequence</h3>
+<svg class="diag" viewBox="0 0 660 440">
+  <defs><marker id="arr8" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+  <!-- Lifeline headers -->
+  <rect x="30" y="10" width="90" height="34" rx="6" fill="rgba(59,139,212,.12)" stroke="#3B8BD4" stroke-width="1.2"/>
+  <text x="75" y="31" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">User</text>
+
+  <rect x="200" y="10" width="110" height="34" rx="6" fill="rgba(127,119,221,.12)" stroke="#7F77DD" stroke-width="1.2"/>
+  <text x="255" y="31" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">:LoginController</text>
+
+  <rect x="380" y="10" width="110" height="34" rx="6" fill="rgba(29,158,117,.12)" stroke="#1D9E75" stroke-width="1.2"/>
+  <text x="435" y="31" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">:AuthService</text>
+
+  <rect x="540" y="10" width="100" height="34" rx="6" fill="rgba(186,117,23,.12)" stroke="#BA7517" stroke-width="1.2"/>
+  <text x="590" y="31" text-anchor="middle" font-size="11" font-weight="500" fill="var(--color-text-primary,#333)" font-family="var(--font-sans,sans-serif)">:UserDB</text>
+
+  <!-- Lifelines (dashed vertical) -->
+  <line x1="75" y1="44" x2="75" y2="420" stroke="#888" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="255" y1="44" x2="255" y2="420" stroke="#888" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="435" y1="44" x2="435" y2="420" stroke="#888" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="590" y1="44" x2="590" y2="420" stroke="#888" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- alt frame -->
+  <rect x="170" y="125" width="460" height="250" rx="4" fill="none" stroke="#BA7517" stroke-width="1" stroke-dasharray="5,3"/>
+  <rect x="170" y="125" width="60" height="18" rx="3" fill="rgba(186,117,23,.15)" stroke="#BA7517" stroke-width="1"/>
+  <text x="200" y="138" text-anchor="middle" font-size="10" font-weight="500" fill="#BA7517" font-family="var(--font-sans,sans-serif)">alt</text>
+  <text x="340" y="140" text-anchor="middle" font-size="10" fill="#BA7517" font-family="var(--font-sans,sans-serif)">[credentials valid]</text>
+
+  <!-- Activation bars -->
+  <rect x="251" y="68" width="8" height="210" fill="rgba(127,119,221,.3)" stroke="#7F77DD" stroke-width="0.5"/>
+  <rect x="431" y="110" width="8" height="170" fill="rgba(29,158,117,.3)" stroke="#1D9E75" stroke-width="0.5"/>
+  <rect x="586" y="140" width="8" height="80" fill="rgba(186,117,23,.3)" stroke="#BA7517" stroke-width="0.5"/>
+
+  <!-- Messages -->
+  <!-- 1: User → LoginController: login(user, pass) -->
+  <line x1="75" y1="80" x2="251" y2="80" stroke="#7F77DD" stroke-width="1.2" marker-end="url(#arr8)"/>
+  <text x="163" y="74" text-anchor="middle" font-size="10" fill="#7F77DD" font-family="var(--font-sans,sans-serif)">1: login(username, pwd)</text>
+
+  <!-- 2: LoginController → AuthService: validate(user, pwd) -->
+  <line x1="259" y1="118" x2="431" y2="118" stroke="#1D9E75" stroke-width="1.2" marker-end="url(#arr8)"/>
+  <text x="345" y="112" text-anchor="middle" font-size="10" fill="#1D9E75" font-family="var(--font-sans,sans-serif)">2: validate(user, pwd)</text>
+
+  <!-- 3: AuthService → UserDB: findUser(username) -->
+  <line x1="439" y1="148" x2="586" y2="148" stroke="#BA7517" stroke-width="1.2" marker-end="url(#arr8)"/>
+  <text x="512" y="142" text-anchor="middle" font-size="10" fill="#BA7517" font-family="var(--font-sans,sans-serif)">3: findUser(username)</text>
+
+  <!-- 4: UserDB → AuthService: userData -->
+  <line x1="586" y1="178" x2="439" y2="178" stroke="#BA7517" stroke-width="1" stroke-dasharray="5,3" marker-end="url(#arr8)"/>
+  <text x="512" y="172" text-anchor="middle" font-size="10" fill="#888" font-family="var(--font-sans,sans-serif)">4: userData</text>
+
+  <!-- 5: AuthService → AuthService (self: hash compare) -->
+  <path d="M439 208 Q480 208 480 223 Q480 238 439 238" fill="none" stroke="#1D9E75" stroke-width="1" marker-end="url(#arr8)"/>
+  <text x="493" y="227" font-size="9" fill="#1D9E75" font-family="var(--font-sans,sans-serif)">5: hashCompare()</text>
+
+  <!-- alt [valid] line -->
+  <line x1="170" y1="255" x2="630" y2="255" stroke="#BA7517" stroke-width="0.5" stroke-dasharray="5,3"/>
+  <text x="340" y="270" text-anchor="middle" font-size="10" fill="#BA7517" font-family="var(--font-sans,sans-serif)">[credentials invalid]</text>
+
+  <!-- 6a: AuthService → LoginController: token (success) -->
+  <line x1="431" y1="245" x2="259" y2="245" stroke="#1D9E75" stroke-width="1" stroke-dasharray="5,3" marker-end="url(#arr8)"/>
+  <text x="345" y="239" text-anchor="middle" font-size="10" fill="#888" font-family="var(--font-sans,sans-serif)">6a: authToken</text>
+
+  <!-- 6b: error (invalid) -->
+  <line x1="431" y1="285" x2="259" y2="285" stroke="#D85A30" stroke-width="1" stroke-dasharray="5,3" marker-end="url(#arr8)"/>
+  <text x="345" y="279" text-anchor="middle" font-size="10" fill="#D85A30" font-family="var(--font-sans,sans-serif)">6b: AuthError</text>
+
+  <!-- 7: LoginController → User: result -->
+  <line x1="251" y1="320" x2="75" y2="320" stroke="#888" stroke-width="1" stroke-dasharray="5,3" marker-end="url(#arr8)"/>
+  <text x="163" y="314" text-anchor="middle" font-size="10" fill="#888" font-family="var(--font-sans,sans-serif)">7: loginResult (success / error)</text>
+
+  <text x="330" y="415" text-anchor="middle" font-size="11" fill="var(--color-text-secondary,#888)" font-family="var(--font-sans,sans-serif)">Sequence Diagram — User Login with «alt» frame for valid/invalid credentials</text>
+</svg>
+
+<h3>Key Points to Remember</h3>
+<div class="grid2">
+<div class="card green">
+<h4>Time flows downward</h4>
+<p style="font-size:13px">Messages are ordered top to bottom. Earlier interactions are higher on the diagram.</p>
+</div>
+<div class="card blue">
+<h4>Combined Fragments</h4>
+<ul style="font-size:13px">
+<li><code>alt</code> — if/else alternatives</li>
+<li><code>opt</code> — optional (if, no else)</li>
+<li><code>loop</code> — repeated interaction</li>
+<li><code>par</code> — parallel execution</li>
+<li><code>ref</code> — reference to another diagram</li>
+</ul>
+</div>
+</div>
+<div class="tip">Use Sequence Diagrams to design and verify the dynamic behavior of a use case. Each use case scenario typically gets one sequence diagram.</div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const labels = {
+    cohesion:'Cohesion',coupling:'Coupling',dfd:'DFD',refactor:'Refactoring',
+    ood:'OO Design',fod:'Function-Oriented Design',usecase:'Use Case Diagram',
+    class:'Class Diagram',activity:'Activity Diagram',sequence:'Sequence Diagram'
+  };
+  document.querySelectorAll('.nav-btn').forEach(b => {
+    if(b.textContent.trim() === labels[id]) b.classList.add('active');
+  });
+}
+</script>
+</body>
+</html>
